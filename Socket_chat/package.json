@@ -1,0 +1,16 @@
+{
+  "name": "Socket_chat",
+  "version": "1.0",
+  "description": "Socket.IO Client for iOS Tutorial, Server-side implementation",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "ejs": "^2.5.6",
+    "express": "^4.10.2",
+    "jsonwebtoken": "^7.3.0",
+    "localtunnel": "^1.8.2",
+    "morgan": "^1.8.1",
+    "mysql": "^2.13.0",
+    "socket.io": "^1.4.4",
+    "websocket": "^1.0.24"
+  }
+}
