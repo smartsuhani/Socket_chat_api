@@ -27,6 +27,10 @@ app.get('/',function (req,res) {
     console.log(res.send({msg:"success"}));
 });
 
+app.post('/register',function (req,res) {
+
+});
+
 var webserver = app.listen(webport,function () {
     console.log("https://"+webserver.address().address+":"+webserver.address().port);
 })
@@ -72,20 +76,69 @@ wsServer.on('request', function(request) {
     console.log((new Date()) + ' Connection accepted.');
 
     // send back chat history
-    if (history.length > 0) {
-        connection.sendUTF(JSON.stringify( { type: 'history', data: history} ));
-    }
+
 
     // user sent some message
     connection.on('message', function(message){
         var a = Buffer(message.binaryData);
         var packet = JSON.parse(a.toString('utf8'));
         console.log(packet);
+        var userq = "SELECT * FROM user WHERE user_id = "+packet.senderId;
 
         if (packet.type == "initConnection") {
-            users[connection.userIndex] = packet.senderId;
-            connection.send(JSON.stringify({reply:"success"}));
+            sql.executeSql(userq , function (err,data) {
+                if (err) {
+                    connection.send(JSON.stringify({type: "error",err : "something went wrong!"}));
+                    connection.close();
+                } else {
+                    if (data.length == 0) {
+                        connection.send(JSON.stringify({type:"authErr",reply:"unauthorized User!"}));
+                        connection.close();
+                    } else {
+                        users[connection.userIndex] = data[data.length - 1].user_id;
+                        connection.send(JSON.stringify({type:"connected",reply:"success"}));
+                        var msgquery = "SELECT * FROM chat WHERE receiver_id = "+packet.senderId+" AND status = 0";
+                        sql.executeSql(msgquery,function (err,data) {
+                            if (err) {
+                                connection.send(JSON.stringify({type: "error",err : "something went wrong!"}));
+                            } else {
+                                if (data.length > 0) {
+                                    connection.send(JSON.stringify( { type: 'history', data: data} ));
+                                }
+                            }
+                        });
+                    }
+                }
+            });
         }
+
+        if (packet.type == "readMsgAck") {
+            var query = "UPDATE chat set status = 2 WHERE receiver_id = "+packet.senderId;
+            sql.executeSql(query,function (err,data) {
+                if (err) {
+                    console.log("Error storing message to database");
+                }
+            });
+            var obj = {
+                time: (new Date()).getTime(),
+                author: packet.senderId,
+                type: 'readMsgAck'
+            };
+            // history.push(obj);
+
+            var sent = false;
+            // send message to receiver
+            var json = JSON.stringify(obj);
+            var rec;
+            for (rec in users) {
+                if (users[rec] == packet.recieverId) {
+                    clients[rec].send(json);
+                    sent = true;
+                }
+            }
+            connection.send(JSON.stringify({type: "msgAck",msgAck:true}));
+        }
+        
         if (packet.type == "message"){
                 var obj = {
                     time: (new Date()).getTime(),
@@ -108,19 +161,20 @@ wsServer.on('request', function(request) {
 
                 if (sent === true) {
                     var query = "INSERT INTO chat (sender_id,receiver_id,message,status,time) VALUES("+packet.senderId+","+packet.recieverId+",'"+packet.message+"',"+1+",'"+Date()+"')";
-                    sql.executeSql(query,function (data,err) {
+                    sql.executeSql(query,function (err,data) {
                         if (err) {
                             console.log("Error storing message to database");
+                        } else {
+                            connection.send(JSON.stringify({type: "msgAck",msgAck:sent}));
                         }
-                        connection.send(JSON.stringify({msgAck:sent}));
                     });
                 } else {
                     var query = "INSERT INTO chat (sender_id,receiver_id,message,status,time) VALUES("+packet.senderId+","+packet.recieverId+",'"+packet.message+"',"+0+",'"+Date()+"')";
-                    sql.executeSql(query,function (data,err) {
+                    sql.executeSql(query,function (err,data) {
                         if (err) {
                             console.log("Error storing message to database");
                         }
-                        connection.send(JSON.stringify({msgAck:sent}));
+                        connection.send(JSON.stringify({type: "msgAck",msgAck:sent}));
                     });
                 }
         }
@@ -128,13 +182,19 @@ wsServer.on('request', function(request) {
 
     // user disconnected
     connection.on('close', function(connection) {
-        if (userName !== false && userColor !== false) {
-            console.log((new Date()) + " Peer " + connection.remoteAddress + " disconnected.");
-            // remove user from the list of connected clients
-            clients.splice(index, 1);
-            // push back user's color to be reused by another user
-            colors.push(userColor);
-        }
+        console.log((new Date()) + " Peer " + connection.remoteAddress + " disconnected.");
+        // remove user from the list of connected clients
+        var lastseenQ = "UPDATE user SET lastseen = "+Data()+"WHERE user_id = "+users[index];
+        sql.executeSql(lastseenQ,function (err,data) {
+            if (err) {
+                console.log("Error storing message to database");
+            } else {
+                console.log(data);
+            }
+        });
+        clients.splice(index, 1);
+        // push back user's color to be reused by another user
+        colors.push(userColor);
     });
 
 });
