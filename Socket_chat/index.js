@@ -83,9 +83,9 @@ wsServer.on('request', function(request) {
         var a = Buffer(message.binaryData);
         var packet = JSON.parse(a.toString('utf8'));
         console.log(packet);
-        var userq = "SELECT * FROM user WHERE user_id = "+packet.senderId;
 
         if (packet.type == "initConnection") {
+            var userq = "SELECT * FROM user WHERE user_id = "+packet.senderId;
             sql.executeSql(userq , function (err,data) {
                 if (err) {
                     connection.send(JSON.stringify({type: "error",err : "something went wrong!"}));
@@ -184,7 +184,7 @@ wsServer.on('request', function(request) {
     connection.on('close', function(connection) {
         console.log((new Date()) + " Peer " + connection.remoteAddress + " disconnected.");
         // remove user from the list of connected clients
-        var lastseenQ = "UPDATE user SET lastseen = "+Data()+"WHERE user_id = "+users[index];
+        var lastseenQ = "UPDATE user SET lastseen = '"+Date()+"' WHERE user_id = "+users[index];
         sql.executeSql(lastseenQ,function (err,data) {
             if (err) {
                 console.log("Error storing message to database");
