@@ -28,7 +28,13 @@ app.get('/',function (req,res) {
 });
 
 app.post('/register',function (req,res) {
-
+    var num = req.body.userId;
+    var q = "SELECT * FROM user WHERE user_id = "+num;
+    sql.executeSql(q,function (err,data) {
+        if (err) {
+            res.send({});
+        }
+    });
 });
 
 var webserver = app.listen(webport,function () {
@@ -102,8 +108,20 @@ wsServer.on('request', function(request) {
                             if (err) {
                                 connection.send(JSON.stringify({type: "error",err : "something went wrong!"}));
                             } else {
+                                var status = false;
                                 if (data.length > 0) {
-                                    connection.send(JSON.stringify( { type: 'history', data: data} ));
+                                    connection.send(JSON.stringify( { type: 'message', data: data} ));
+                                    status = true
+                                }
+                                if (status) {
+                                    var q = "UPDATE chat set status = 1 WHERE receiver_id = "+packet.senderId;
+                                    sql.executeSql(q,function (err,data) {
+                                       if (err) {
+                                           console.log("error updating!");
+                                       } else {
+
+                                       }
+                                    });
                                 }
                             }
                         });
@@ -131,19 +149,25 @@ wsServer.on('request', function(request) {
             var json = JSON.stringify(obj);
             var rec;
             for (rec in users) {
+                console.log("outer " + rec);
                 if (users[rec] == packet.recieverId) {
+                    console.log("inner " + rec);
                     clients[rec].send(json);
                     sent = true;
+                    break;
                 }
             }
             connection.send(JSON.stringify({type: "msgAck",msgAck:true}));
         }
-        
+
         if (packet.type == "message"){
                 var obj = {
-                    time: (new Date()).getTime(),
-                    text: packet.message,
-                    author: packet.senderId,
+                    data: [{
+                        time: Date(),
+                        message: packet.message,
+                        sender_id: packet.senderId,
+                        receiver_id: packet.recieverId
+                    }],
                     type: 'message'
                 };
                 // history.push(obj);
@@ -154,6 +178,7 @@ wsServer.on('request', function(request) {
                 var rec;
                 for (rec in users) {
                     if (users[rec] == packet.recieverId) {
+                        console.log("inner "+ rec);
                         clients[rec].send(json);
                         sent = true;
                     }
@@ -182,7 +207,7 @@ wsServer.on('request', function(request) {
 
     // user disconnected
     connection.on('close', function(connection) {
-        console.log((new Date()) + " Peer " + connection.remoteAddress + " disconnected.");
+        console.log((new Date()) + " Peer " + users[index] + " disconnected.");
         // remove user from the list of connected clients
         var lastseenQ = "UPDATE user SET lastseen = '"+Date()+"' WHERE user_id = "+users[index];
         sql.executeSql(lastseenQ,function (err,data) {
