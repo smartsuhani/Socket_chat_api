@@ -13,6 +13,7 @@ var http = require('http');
 var express = require('express');
 var bodyParser = require('body-parser');
 var morgan = require('morgan');
+var multer = require('multer');
 
 var app = express();
 var webport = 8085;
@@ -23,6 +24,21 @@ app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
+var storage  = multer.diskStorage({
+    destination:function (req,file,callback) {
+        req.body.path = "./uploads/";
+        callback(null,'./uploads/');
+    },
+    filename:function (req,file,callback) {
+        console.log(file);
+        var file1=file.originalname.split(".");
+        req.body.file = file1[0]+"_"+Date.now()+"."+file1[file1.length -1];
+        callback(null,req.body.file);
+    }
+});
+
+var upload = multer({storage:storage}).array('file',10);
+
 app.get('/',function (req,res) {
     console.log(res.send({msg:"success"}));
 });
@@ -32,19 +48,36 @@ app.post('/register',function (req,res) {
     var q = "SELECT * FROM user WHERE user_id = "+num;
     sql.executeSql(q,function (err,data) {
         if (err) {
-            res.send({});
+            res.send({err:"something went wrong try again later!"});
+        } else {
+            if (data.length > 0) {
+                res.send({msg: "number already registered"});
+            } else {
+
+            }
         }
+    });
+});
+
+app.post('/upload',function (req,res) {
+    upload(req, res, function(err) {
+        if(err) {
+            console.log('Error Occured');
+            return;
+        }
+        console.log("hello  :"+req.body.file);
+        res.end('Your File Uploaded');
+        console.log('Photo Uploaded');
     });
 });
 
 var webserver = app.listen(webport,function () {
     console.log("https://"+webserver.address().address+":"+webserver.address().port);
-})
+});
 /**
  * Global variables
  */
 // entire message history
-var history = new Array();
 // list of currently connected clients (users)
 var clients = new Array();
 var users = new Array();
@@ -160,7 +193,36 @@ wsServer.on('request', function(request) {
             connection.send(JSON.stringify({type: "msgAck",msgAck:true}));
         }
 
+        if(packet.type == "groupmessage"){
+            var obj = {
+                data: [{
+                    time: Date(),
+                    message: packet.message,
+                    sender_id: packet.senderId,
+                    receiver_id: packet.recieverId
+                }],
+                type: 'message'
+        };
+            // history.push(obj);
+            var sent = false;
+            // send message to receiver
+            var json = JSON.stringify(obj);
+            var rec;
+            for (rec in users) {
+                var id;
+                for(id in packet.receivers){
+                    if (users[rec] == id) {
+                        console.log("inner "+ rec);
+                        clients[rec].send(json);
+                        sent = true;
+                    }
+                }
+            }
+
+        }
+
         if (packet.type == "message"){
+
                 var obj = {
                     data: [{
                         time: Date(),
@@ -217,9 +279,13 @@ wsServer.on('request', function(request) {
                 console.log(data);
             }
         });
+        // remove user from the list of connected clients
         clients.splice(index, 1);
         // push back user's color to be reused by another user
         colors.push(userColor);
+        users = users.filter(function (x) {
+            return x != users[index];
+        });
     });
 
 });
