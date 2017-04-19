@@ -253,13 +253,11 @@ wsServer.on('request', function (request) {
                                                 }
                                             }
                                         }
-
                                     }
                                 });
                             }
                         });
                     }
-
                 }
             });
         }
@@ -270,7 +268,7 @@ wsServer.on('request', function (request) {
                     time: Date(),
                     message: packet.message,
                     sender_id: packet.senderId,
-                    group_id: packet.groupId,
+                    group_id: packet.groupId
                 }],
                 type: 'message'
             };
@@ -283,16 +281,33 @@ wsServer.on('request', function (request) {
                 if (err) {
 
                 } else {
-                    for (rec in users) {
-                        var id;
-                        for (id in data) {
-                            if (users[rec] == id) {
-                                console.log("inner " + rec);
-                                clients[rec].send(json);
-                                sent = true;
+                    sql.executeSql("INSERT INTO groupmessage(sender_id,group_id,message,delivered_to,read_by) VALUES("+packet.senderId+","+packet.groupId+",'"+packet.message+"','','')",function (err,data) {
+                        if (err) {
+
+                        } else {
+                            for (rec in users) {
+                                var id;
+                                for (id in data) {
+                                    if (users[rec] == id) {
+                                        console.log("inner " + rec);
+                                        clients[rec].send(json);
+                                        sent = true;
+                                        sql.executeSql("SELECT delivered_to FROM groupmessage WHERE msg_id = "+data["insertId"],function (err,data) {
+                                            if (err) {
+
+                                            } else {
+                                                if (data["delivered_to"] == '') {
+                                                    data["delivered_to"] += users[rec].toString();
+                                                } else {
+                                                    data["delivered_to"] += ","+users[rec].toString();
+                                                }
+                                            }
+                                        });
+                                    }
+                                }
                             }
                         }
-                    }
+                    });
                 }
             });
         }
