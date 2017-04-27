@@ -4,7 +4,7 @@
 process.title = 'node-chat';
 
 // Port where we'll run the websocket server
-var webSocketsServerPort = 1337;
+var webSocketsServerPort = 8001;
 
 // websocket and http servers
 var webSocketServer = require('websocket').server;
@@ -132,6 +132,7 @@ var webserver = app.listen(webport, function () {
 // list of currently connected clients (users)
 var clients = new Array();
 var users = new Array();
+var userStatusReq = new Array();
 // Array with some colors
 var colors = ['red', 'green', 'blue', 'magenta', 'purple', 'plum', 'orange'];
 // ... in random order
@@ -161,7 +162,6 @@ wsServer.on('request', function (request) {
     // accept connection
     var connection = request.accept(null, request.origin);
     var index = clients.push(connection) - 1;
-    connection["userIndex"] = index;
     var userName = false;
     var userColor = false;
     var hold_group_id;
@@ -188,8 +188,21 @@ wsServer.on('request', function (request) {
                         connection.send(JSON.stringify({type: "authErr", reply: "unauthorized User!"}));
                         connection.close();
                     } else {
-                        users[connection.userIndex] = data[data.length - 1].user_id;
+                        users[index] = data[data.length - 1].user_id;
                         connection.send(JSON.stringify({type: "connected", reply: "success"}));
+                        var i;
+                        for (i in userStatusReq){
+                            if (users[index] == userStatusReq[i]["user"]){
+                                var j;
+                                for (j in users) {
+                                    if (users[j] == userStatusReq[i]["requester"]) {
+                                        clients[j].send(JSON.stringify({type: "userStatus",online:1}));
+                                    }
+                                }
+                            } else if (users[index] == userStatusReq[i]["requester"] && userStatusReq[i]["typing"]) {
+                                connection.send(JSON.stringify({type: "userStatus",online:2}));
+                            }
+                        }
                         var msgquery = "SELECT * FROM chat WHERE receiver_id = " + packet.senderId + " AND status = 0";
                         sql.executeSql(msgquery, function (err, data) {
                             if (err) {
@@ -236,14 +249,13 @@ wsServer.on('request', function (request) {
                             if (err) {
 
                             } else {
-                                console.log(data);
                                 if (data.length > 0 ) {
-                                    var ack;
-                                    for (ack in data) {
-                                        if (ack.status == 1) {
-                                            connection.send(JSON.stringify({type: "msgAck", msgAck: 1, senderId: ack.receiver_id}));
-                                        } else if (ack.status == 3) {
-                                            connection.send(JSON.stringify({type: "msgAck",msgAck: 3, senderId: ack.receiver_id}));
+
+                                    for (var i = 0 ; i < data.length ; i++) {
+                                        if (data[i].status == 1) {
+                                            connection.send(JSON.stringify({type: "msgAck", msgAck: 1, senderId: data[i].receiver_id}));
+                                        } else if (data[i].status == 3) {
+                                            connection.send(JSON.stringify({type: "msgAck",msgAck: 3, senderId: data[i].receiver_id}));
                                         }
                                     }
                                     sql.executeSql("UPDATE chat SET status = IF(status = 1,2,IF(status = 3,4,status)) WHERE sender_id = "+users[index],function (err,data) {
@@ -295,7 +307,6 @@ wsServer.on('request', function (request) {
                     console.log("inner " + rec);
                     clients[rec].send(json);
                     sent = true;
-                    break;
                 }
             }
             if (sent) {
@@ -306,7 +317,7 @@ wsServer.on('request', function (request) {
                     }
                 });
             }
-            connection.send(JSON.stringify({type: "msgAck", msgAck: true}));
+            // connection.send(JSON.stringify({type: "msgAck", msgAck: 5}));
         }
 
         if (packet.type == "createGroup") {
@@ -449,7 +460,7 @@ wsServer.on('request', function (request) {
             // send message to receiver
             var json = JSON.stringify(obj);
             var rec;
-            console.log(users);
+            console.log("users: "+users.length+"\nconnections: "+clients.length);
             for (rec in users) {
                 if (users[rec] == packet.recieverId) {
                     console.log("inner " + rec);
@@ -478,6 +489,40 @@ wsServer.on('request', function (request) {
                 });
             }
         }
+
+        if (packet.type == "userstatus") {
+            var rec;
+            userStatusReq.push({requester:users[index],user:packet.userId,typing: false});
+            var status = 0;
+            for (rec in users) {
+                if (users[rec] == packet.userId) {
+                    status = 1;
+                }
+            }
+
+            connection.send(JSON.stringify({type:"userStatus",online: status}));
+        }
+
+        if (packet.type == "typing") {
+            var user;
+            if (packet.typing == true) {
+                userStatusReq.push({requester:packet.userId,user:users[index],typing: true});
+                for (user in users) {
+                    if (users[user] == packet.userId) {
+                        clients[user].send(JSON.stringify({type:"userStatus",senderId:users[index],online: 2}));
+                    }
+                }
+            } else {
+                userStatusReq.filter(function (req) {
+                    return req["user"] != users[index] && req["typing"];
+                });
+                for (user in users) {
+                    if (users[user] == packet.userId) {
+                        clients[user].send(JSON.stringify({type:"userStatus",senderId:users[index],online: 3}));
+                    }
+                }
+            }
+        }
     });
 
     // user disconnected
@@ -485,20 +530,41 @@ wsServer.on('request', function (request) {
         console.log((new Date()) + " Peer " + users[index] + " disconnected.");
         // remove user from the list of connected clients
         var lastseenQ = "UPDATE user SET lastseen = '" + Date() + "' WHERE user_id = " + users[index];
-        sql.executeSql(lastseenQ, function (err, data) {
-            if (err) {
-                console.log("Error updating user lastseen to database");
+        if (users[index] != undefined) {
+            sql.executeSql(lastseenQ, function (err, data) {
+                if (err) {
+                    console.log("Error updating user lastseen to database");
+                } else {
+                    // console.log(data);
+                    // remove user from the list of connected clients
+                }
+            });
+        }
+        var i;
+        for (i in userStatusReq){
+            if (users[index] == userStatusReq[i]["user"]){
+                var j;
+                for (j in users) {
+                    if (users[j] == userStatusReq[i]["requester"]) {
+                        clients[j].send(JSON.stringify({type: "userStatus",online:0}));
+                    }
+                }
+            }
+        }
+
+        userStatusReq = userStatusReq.filter(function (req) {
+            // return req["requester"] != users[index];
+            if (req["user"] == users[index] && req["typing"]) {
+                return true;
             } else {
-                console.log(data);
-                // remove user from the list of connected clients
-                clients.splice(index, 1);
-                // push back user's color to be reused by another user
-                colors.push(userColor);
-                users = users.filter(function (x) {
-                    return x != users[index];
-                });
+                return req["requester"] != users[index];
             }
         });
+        clients.splice(index, 1);
+        users.splice(index, 1);
+
+        // delete clients[index];
+        // delete users[index];
     });
 
 });
