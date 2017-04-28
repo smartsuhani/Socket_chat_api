@@ -13,6 +13,8 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var morgan = require('morgan');
 var multer = require('multer');
+var satelize = require('satelize');
+var fs = require('fs');
 var twilioClient = require('twilio')(
     'AC3b33267f212a5035780b89a5aab9e3be',
     '686f4ccbd6561d7ff7df6153434bd493'
@@ -30,18 +32,28 @@ app.use(bodyParser.json());
 
 var storage = multer.diskStorage({
     destination: function (req, file, callback) {
-        req.body.path = "./uploads/";
-        callback(null, './uploads/');
+        console.log(req.body);
+        if (!fs.existsSync('./upload/user'+parseInt(req.body.senderId))){
+            console.log("dir not exist");
+            try {
+                fs.mkdirSync('./upload/user'+parseInt(req.body.senderId));
+            } catch (err) {
+                console.log(err);
+            }
+        }
+        req.body.path = "./uploads/user"+parseInt(req.body.senderId)+"/";
+        callback(null, './uploads/user'+parseInt(req.body.senderId)+"/");
     },
     filename: function (req, file, callback) {
         console.log(file);
+
         var file1 = file.originalname.split(".");
         req.body.file = file1[0] + "_" + Date.now() + "." + file1[file1.length - 1];
         callback(null, req.body.file);
     }
 });
 
-var upload = multer({storage: storage}).array('file', 10);
+var upload = multer({storage: storage});
 
 // app.get('/', function (req, res) {
 //     // console.log(res.send({msg:"success"}));
@@ -79,6 +91,7 @@ app.post('/register', function (req, res) {
                         };
                         number_otp["user"+num.toString()] = userobj;
                         res.send({resp: "success"});
+                        console.log(userobj);
                     }
                 });
             }
@@ -93,7 +106,7 @@ app.post('/verification',function (req,res) {
     console.log(number_otp);
     if (number_otp["user "+num.toString()].otp == parseInt(otp)) {
         res.send({resp: "success"});
-        var newuser = "INSERT INTO user (user_id,nick_name,status_user,profileimage,devicetoken,devicetype,lastseen,country,time_zone) VALUES("+num+",'"+num+"','hi there i am on chat app!','./default_pic/default-user.png','')";
+        var newuser = "INSERT INTO user (user_id,nick_name,status_user,profileimage,devicetoken,devicetype,lastseen,country,time_zone) VALUES("+num+",'"+num+"','hi there i am on chat app!','./default_pic/default-user.png','','','','','')";
         sql.executeSql(newuser,function (err,data) {
             if (err) {
 
@@ -106,8 +119,39 @@ app.post('/verification',function (req,res) {
     }
 });
 
-app.post('/profilecreation',function (req,res) {
+app.post('/profilecreation',upload.single('file'), function (req,res) {
 
+    upload(req,res,function (err) {
+        if (err) {
+            console.log("failed :"+err);
+            res.send({resp:"failed"});
+        } else {
+            var ip = req.headers["x-real-ip"];
+            var country;
+            var timezone;
+            satelize.satelize({ip:ip}, function(err, payload) {
+                if (err) {
+
+                } else {
+                    country = payload.country.en;
+                    timezone = payload.timezone;
+
+                    var lastseen = (new Date()).getTime();
+                    var updateuser = "UPDATE user set nick_name = '"+req.body.username+"' profileimage = '"+req.body.path+req.body.file+"' lastseen = "+lastseen+" country = '"+country+"' time_zone = '"+timezone+"' WHERE user_id = "+parseInt(req.body.senderId);
+                    console.log("query: "+updateuser);
+                    sql.executeSql(updateuser,function (err,data) {
+                        if (err) {
+                            console.log("user "+req.body.senderId+" "+req.body.username+" updation failed");
+                            res.send({resp: "failed"});
+                        } else {
+                            console.log("user "+req.body.senderId+" updated successfully");
+                            res.send({resp: "success"});
+                        }
+                    });
+                }
+            });
+        }
+    });
 });
 
 app.post('/upload', function (req, res) {
@@ -122,7 +166,7 @@ app.post('/upload', function (req, res) {
     });
 });
 
-var webserver = app.listen(webport, function () {
+var webserver = app.listen(webport,'192.168.188.128', function () {
     console.log("https://" + webserver.address().address + ":" + webserver.address().port);
 });
 /**
@@ -143,7 +187,7 @@ colors.sort(function (a, b) {
 var server = http.createServer(function (request, response) {
     // Not important for us. We're writing WebSocket server, not HTTP server
 });
-server.listen(webSocketsServerPort, function () {
+server.listen(webSocketsServerPort, '192.168.188.128', function () {
     console.log((new Date()) + " Server is listening on port " + webSocketsServerPort);
 });
 
@@ -529,7 +573,7 @@ wsServer.on('request', function (request) {
     connection.on('close', function (connection) {
         console.log((new Date()) + " Peer " + users[index] + " disconnected.");
         // remove user from the list of connected clients
-        var lastseenQ = "UPDATE user SET lastseen = '" + Date() + "' WHERE user_id = " + users[index];
+        var lastseenQ = "UPDATE user SET lastseen = " + Date().getTime() + " WHERE user_id = " + users[index];
         if (users[index] != undefined) {
             sql.executeSql(lastseenQ, function (err, data) {
                 if (err) {
