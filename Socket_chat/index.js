@@ -27,16 +27,16 @@ var number_otp = {};
 
 app.set('secret', 'token1234567');
 app.use(morgan('dev'));
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 var storage = multer.diskStorage({
     destination: function (req, file, callback) {
         console.log(req.body);
-        if (!fs.existsSync('./upload/user'+parseInt(req.body.senderId))){
+        if (!fs.existsSync('./uploads/user'+parseInt(req.body.senderId))){
             console.log("dir not exist");
             try {
-                fs.mkdirSync('./upload/user'+parseInt(req.body.senderId));
+                fs.mkdirSync('./uploads/user'+parseInt(req.body.senderId));
             } catch (err) {
                 console.log(err);
             }
@@ -53,18 +53,12 @@ var storage = multer.diskStorage({
     }
 });
 
-var upload = multer({storage: storage});
+// var uploads = multer({storage:storage}).array('file',10);
+var upload = multer({storage:storage});
 
-// app.get('/', function (req, res) {
-//     // console.log(res.send({msg:"success"}));
-//     sql.executeSql("INSERT INTO usergroups(group_name,created_by) VALUES('abcd',8454644)", function (err, data) {
-//         if (err) {
-//             res.send({msg: err});
-//         } else {
-//             res.send({group_id: data["insertId"]});
-//         }
-//     });
-// });
+app.get('/', function (req, res) {
+    res.sendFile(__dirname+"/form.html");
+});
 
 app.post('/register', function (req, res) {
     var num = req.body.userId;
@@ -119,42 +113,42 @@ app.post('/verification',function (req,res) {
     }
 });
 
-app.post('/profilecreation',upload.single('file'), function (req,res) {
-
-    upload(req,res,function (err) {
+app.post('/profilecreation',upload.any(), function (req,res) {
+    console.log('fdffsdf');
+    // upload(req,res,function (err) {
+    //      if (err) {
+    //          console.log("failed :" + err);
+    //          res.send({resp: "failed"});
+    //      } else {
+    var ip = req.connection.remoteAddress;
+    var country;
+    var timezone;
+    satelize.satelize({ip: ip}, function (err, payload) {
         if (err) {
-            console.log("failed :"+err);
-            res.send({resp:"failed"});
+
         } else {
-            var ip = req.headers["x-real-ip"];
-            var country;
-            var timezone;
-            satelize.satelize({ip:ip}, function(err, payload) {
+            country = payload.country.en;
+            timezone = payload.timezone;
+
+            var lastseen = (new Date()).getTime();
+            var updateuser = "UPDATE user set nick_name = '" + req.body.username + "' profileimage = '" + req.body.path + req.body.file + "' lastseen = " + lastseen + " country = '" + country + "' time_zone = '" + timezone + "' WHERE user_id = " + parseInt(req.body.senderId);
+            console.log("query: " + updateuser);
+            sql.executeSql(updateuser, function (err, data) {
                 if (err) {
-
+                    console.log("user " + req.body.senderId + " " + req.body.username + " updation failed");
+                    res.send({resp: "failed"});
                 } else {
-                    country = payload.country.en;
-                    timezone = payload.timezone;
-
-                    var lastseen = (new Date()).getTime();
-                    var updateuser = "UPDATE user set nick_name = '"+req.body.username+"' profileimage = '"+req.body.path+req.body.file+"' lastseen = "+lastseen+" country = '"+country+"' time_zone = '"+timezone+"' WHERE user_id = "+parseInt(req.body.senderId);
-                    console.log("query: "+updateuser);
-                    sql.executeSql(updateuser,function (err,data) {
-                        if (err) {
-                            console.log("user "+req.body.senderId+" "+req.body.username+" updation failed");
-                            res.send({resp: "failed"});
-                        } else {
-                            console.log("user "+req.body.senderId+" updated successfully");
-                            res.send({resp: "success"});
-                        }
-                    });
+                    console.log("user " + req.body.senderId + " updated successfully");
+                    res.send({resp: "success"});
                 }
             });
         }
     });
+    // }
+    // });
 });
 
-app.post('/upload', function (req, res) {
+app.post('/uploads', function (req, res) {
     upload(req, res, function (err) {
         if (err) {
             console.log('Error Occured');
@@ -166,7 +160,7 @@ app.post('/upload', function (req, res) {
     });
 });
 
-var webserver = app.listen(webport,'192.168.188.128', function () {
+var webserver = app.listen(webport,'192.168.200.15', function () {
     console.log("https://" + webserver.address().address + ":" + webserver.address().port);
 });
 /**
@@ -187,7 +181,7 @@ colors.sort(function (a, b) {
 var server = http.createServer(function (request, response) {
     // Not important for us. We're writing WebSocket server, not HTTP server
 });
-server.listen(webSocketsServerPort, '192.168.188.128', function () {
+server.listen(webSocketsServerPort, '192.168.200.15', function () {
     console.log((new Date()) + " Server is listening on port " + webSocketsServerPort);
 });
 

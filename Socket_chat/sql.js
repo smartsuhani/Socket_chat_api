@@ -1,9 +1,10 @@
 var mysql = require('mysql');
 var dbconfig = {
     host     : 'localhost',
-    user     : 'abcd',
-    password : 'abcd',
-    database : 'Socket_chat'
+    user     : 'root',
+    password : '',
+    database : 'Socket_chat',
+    port     : 3333
 };
 
 exports.executeSql = function (sql, callback) {
