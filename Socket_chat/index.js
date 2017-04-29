@@ -57,7 +57,11 @@ var storage = multer.diskStorage({
 var upload = multer({storage:storage});
 
 app.get('/', function (req, res) {
-    res.sendFile(__dirname+"/form.html");
+    // res.sendFile(__dirname+"/form.html");
+});
+
+app.get('/download',function (req,res) {
+    res.sendFile(__dirname+"/"+req.query.file);
 });
 
 app.post('/register', function (req, res) {
@@ -115,12 +119,12 @@ app.post('/verification',function (req,res) {
 
 app.post('/profilecreation',upload.any(), function (req,res) {
     console.log('fdffsdf');
-    // upload(req,res,function (err) {
+    // uploads(req,res,function (err) {
     //      if (err) {
     //          console.log("failed :" + err);
     //          res.send({resp: "failed"});
     //      } else {
-    var ip = req.connection.remoteAddress;
+    var ip = req.headers["x-real-ip"];
     var country;
     var timezone;
     satelize.satelize({ip: ip}, function (err, payload) {
@@ -131,7 +135,7 @@ app.post('/profilecreation',upload.any(), function (req,res) {
             timezone = payload.timezone;
 
             var lastseen = (new Date()).getTime();
-            var updateuser = "UPDATE user set nick_name = '" + req.body.username + "' profileimage = '" + req.body.path + req.body.file + "' lastseen = " + lastseen + " country = '" + country + "' time_zone = '" + timezone + "' WHERE user_id = " + parseInt(req.body.senderId);
+            var updateuser = "UPDATE user set nick_name = '" + req.body.username + "' ,profileimage = '" + req.body.path + req.body.file + "' ,lastseen = " + lastseen + " ,country = '" + country + "' ,time_zone = '" + timezone + "' WHERE user_id = " + parseInt(req.body.senderId);
             console.log("query: " + updateuser);
             sql.executeSql(updateuser, function (err, data) {
                 if (err) {
@@ -160,7 +164,7 @@ app.post('/uploads', function (req, res) {
     });
 });
 
-var webserver = app.listen(webport,'192.168.200.15', function () {
+var webserver = app.listen(webport, function () {
     console.log("https://" + webserver.address().address + ":" + webserver.address().port);
 });
 /**
@@ -181,7 +185,7 @@ colors.sort(function (a, b) {
 var server = http.createServer(function (request, response) {
     // Not important for us. We're writing WebSocket server, not HTTP server
 });
-server.listen(webSocketsServerPort, '192.168.200.15', function () {
+server.listen(webSocketsServerPort, function () {
     console.log((new Date()) + " Server is listening on port " + webSocketsServerPort);
 });
 
