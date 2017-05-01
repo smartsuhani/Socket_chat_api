@@ -4,6 +4,7 @@ var dbconfig = {
     user     : 'root',
     password : 'root',
     database : 'Socket_chat',
+    multipleStatements: true
 };
 
 exports.executeSql = function (sql, callback) {

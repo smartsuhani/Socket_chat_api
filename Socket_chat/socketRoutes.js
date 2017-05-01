@@ -1,8 +1,6 @@
 
 var sql = require('./sql');
-
-var clients = new Array();
-var users = new Array();
+var user1 = require('./usersGlobal');
 var userStatusReq = new Array();
 
 module.exports = {
@@ -12,7 +10,7 @@ module.exports = {
 
             // accept connection
             var connection = request.accept(null, request.origin);
-            var index = clients.push(connection) - 1;
+            var index = user1.clients.push(connection) - 1;
             var userName = false;
             var userColor = false;
             var hold_group_id;
@@ -39,18 +37,18 @@ module.exports = {
                                 connection.send(JSON.stringify({type: "authErr", reply: "unauthorized User!"}));
                                 connection.close();
                             } else {
-                                users[index] = data[data.length - 1].user_id;
+                                user1.users[index] = data[data.length - 1].user_id;
                                 connection.send(JSON.stringify({type: "connected", reply: "success"}));
                                 var i;
                                 for (i in userStatusReq){
-                                    if (users[index] == userStatusReq[i]["user"]){
+                                    if (user1.users[index] == userStatusReq[i]["user"]){
                                         var j;
-                                        for (j in users) {
-                                            if (users[j] == userStatusReq[i]["requester"]) {
-                                                clients[j].send(JSON.stringify({type: "userStatus",online:1}));
+                                        for (j in user1.users) {
+                                            if (user1.users[j] == userStatusReq[i]["requester"]) {
+                                                user1.clients[j].send(JSON.stringify({type: "userStatus",online:1}));
                                             }
                                         }
-                                    } else if (users[index] == userStatusReq[i]["requester"] && userStatusReq[i]["typing"]) {
+                                    } else if (user1.users[index] == userStatusReq[i]["requester"] && userStatusReq[i]["typing"]) {
                                         connection.send(JSON.stringify({type: "userStatus",online:2}));
                                     }
                                 }
@@ -74,9 +72,9 @@ module.exports = {
                                                     for (msg in data) {
                                                         var rec;
                                                         var sent = false;
-                                                        for (rec in users) {
-                                                            if (users[rec] == msg.sender_id) {
-                                                                clients[rec].send(JSON.stringify({type: "msgAck", msgAck: 1, senderId:packet.senderId}));
+                                                        for (rec in user1.users) {
+                                                            if (user1.users[rec] == msg.sender_id) {
+                                                                user1.clients[rec].send(JSON.stringify({type: "msgAck", msgAck: 1, senderId:packet.senderId}));
                                                                 sent = true;
                                                             }
                                                         }
@@ -109,7 +107,7 @@ module.exports = {
                                                     connection.send(JSON.stringify({type: "msgAck",msgAck: 3, senderId: data[i].receiver_id}));
                                                 }
                                             }
-                                            sql.executeSql("UPDATE chat SET status = IF(status = 1,2,IF(status = 3,4,status)) WHERE sender_id = "+users[index],function (err,data) {
+                                            sql.executeSql("UPDATE chat SET status = IF(status = 1,2,IF(status = 3,4,status)) WHERE sender_id = "+user1.users[index],function (err,data) {
                                                 if (err) {
 
                                                 } else {
@@ -124,17 +122,8 @@ module.exports = {
                     });
                 }
 
-                if (packet.type == "contactCheck") {
-                    var contacts = packet.contacts;
-                    var contact;
-                    var checkedContacts = {};
-                    for (contact in contacts) {
-                        var query = "SELECT * FROM user WHERE user_id = "+contact.user_id;
-                    }
-                }
-
                 if (packet.type == "readMsgAck") {
-                    var query = "UPDATE chat set status = 3 WHERE receiver_id = " + users[index] + " AND sender_id = "+packet.senderId;
+                    var query = "UPDATE chat set status = 3 WHERE receiver_id = " + user1.users[index] + " AND sender_id = "+packet.senderId;
                     sql.executeSql(query, function (err, data) {
                         if (err) {
                             console.log("Error storing message to database");
@@ -142,7 +131,7 @@ module.exports = {
                     });
                     var obj = {
                         time: (new Date()).getTime(),
-                        senderId: users[index],
+                        senderId: user1.users[index],
                         type: 'msgAck',
                         msgAck: 3
                     };
@@ -152,16 +141,16 @@ module.exports = {
                     // send message to receiver
                     var json = JSON.stringify(obj);
                     var rec;
-                    for (rec in users) {
+                    for (rec in user1.users) {
                         console.log("outer " + rec);
-                        if (users[rec] == packet.senderId) {
+                        if (user1.users[rec] == packet.senderId) {
                             console.log("inner " + rec);
-                            clients[rec].send(json);
+                            user1.clients[rec].send(json);
                             sent = true;
                         }
                     }
                     if (sent) {
-                        var query = "UPDATE chat set status = 4 WHERE receiver_id = " + users[index] + " AND sender_id = "+packet.senderId;
+                        var query = "UPDATE chat set status = 4 WHERE receiver_id = " + user1.users[index] + " AND sender_id = "+packet.senderId;
                         sql.executeSql(query, function (err, data) {
                             if (err) {
                                 console.log("Error storing message to database");
@@ -220,10 +209,10 @@ module.exports = {
                                         sql.executeSql(q2,function (err,data) {
                                             if (err) {
                                             } else {
-                                                for (rec in users) {
-                                                    if (users[rec] == a["user_id"]) {
+                                                for (rec in user1.users) {
+                                                    if (user1.users[rec] == a["user_id"]) {
                                                         console.log("inner " + rec);
-                                                        clients[rec].send(json);
+                                                        user1.clients[rec].send(json);
                                                         sent = true;
                                                     } else {
 
@@ -264,21 +253,21 @@ module.exports = {
                                 if (err) {
 
                                 } else {
-                                    for (rec in users) {
+                                    for (rec in user1.users) {
                                         var id;
                                         for (id in data) {
-                                            if (users[rec] == id) {
+                                            if (user1.users[rec] == id) {
                                                 console.log("inner " + rec);
-                                                clients[rec].send(json);
+                                                user1.clients[rec].send(json);
                                                 sent = true;
                                                 sql.executeSql("SELECT delivered_to FROM groupmessage WHERE msg_id = "+data["insertId"],function (err,data) {
                                                     if (err) {
 
                                                     } else {
                                                         if (data["delivered_to"] == '') {
-                                                            data["delivered_to"] += users[rec].toString();
+                                                            data["delivered_to"] += user1.users[rec].toString();
                                                         } else {
-                                                            data["delivered_to"] += ","+users[rec].toString();
+                                                            data["delivered_to"] += ","+user1.users[rec].toString();
                                                         }
                                                         sql.executeSql("UPDATE groupmessage SET delivered_to = '"+data["delivered_to"]+"' WHERE msg_id = "+data["insertId"],function (err,data) {
 
@@ -311,11 +300,11 @@ module.exports = {
                     // send message to receiver
                     var json = JSON.stringify(obj);
                     var rec;
-                    console.log("users: "+users.length+"\nconnections: "+clients.length);
-                    for (rec in users) {
-                        if (users[rec] == packet.recieverId) {
+                    console.log("users: "+user1.users.length+"\nconnections: "+user1.clients.length);
+                    for (rec in user1.users) {
+                        if (user1.users[rec] == packet.recieverId) {
                             console.log("inner " + rec);
-                            clients[rec].send(json);
+                            user1.clients[rec].send(json);
                             sent = true;
                         }
                     }
@@ -343,10 +332,10 @@ module.exports = {
 
                 if (packet.type == "userstatus") {
                     var rec;
-                    userStatusReq.push({requester:users[index],user:packet.userId,typing: false});
+                    userStatusReq.push({requester:user1.users[index],user:packet.userId,typing: false});
                     var status = 0;
-                    for (rec in users) {
-                        if (users[rec] == packet.userId) {
+                    for (rec in user1.users) {
+                        if (user1.users[rec] == packet.userId) {
                             status = 1;
                         }
                     }
@@ -357,19 +346,19 @@ module.exports = {
                 if (packet.type == "typing") {
                     var user;
                     if (packet.typing == true) {
-                        userStatusReq.push({requester:packet.userId,user:users[index],typing: true});
-                        for (user in users) {
-                            if (users[user] == packet.userId) {
-                                clients[user].send(JSON.stringify({type:"userStatus",senderId:users[index],online: 2}));
+                        userStatusReq.push({requester:packet.userId,user:user1.users[index],typing: true});
+                        for (user in user1.users) {
+                            if (user1.users[user] == packet.userId) {
+                                user1.clients[user].send(JSON.stringify({type:"userStatus",senderId:user1.users[index],online: 2}));
                             }
                         }
                     } else {
                         userStatusReq.filter(function (req) {
-                            return req["user"] != users[index] && req["typing"];
+                            return req["user"] != user1.users[index] && req["typing"];
                         });
-                        for (user in users) {
-                            if (users[user] == packet.userId) {
-                                clients[user].send(JSON.stringify({type:"userStatus",senderId:users[index],online: 3}));
+                        for (user in user1.users) {
+                            if (user1.users[user] == packet.userId) {
+                                user1.clients[user].send(JSON.stringify({type:"userStatus",senderId:user1.users[index],online: 3}));
                             }
                         }
                     }
@@ -378,44 +367,44 @@ module.exports = {
 
             // user disconnected
             connection.on('close', function (connection) {
-                console.log((new Date()) + " Peer " + users[index] + " disconnected.");
-                // remove user from the list of connected clients
-                var lastseenQ = "UPDATE user SET lastseen = " + (new Date()).getTime() + " WHERE user_id = " + users[index];
-                if (users[index] != undefined) {
+                console.log((new Date()) + " Peer " + user1.users[index] + " disconnected.");
+                // remove user from the list of connected user1.clients
+                var lastseenQ = "UPDATE user SET lastseen = " + (new Date()).getTime() + " WHERE user_id = " + user1.users[index];
+                if (user1.users[index] != undefined) {
                     sql.executeSql(lastseenQ, function (err, data) {
                         if (err) {
                             console.log("Error updating user lastseen to database");
                         } else {
                             // console.log(data);
-                            // remove user from the list of connected clients
+                            // remove user from the list of connected user1.clients
                         }
                     });
                 }
                 var i;
                 for (i in userStatusReq){
-                    if (users[index] == userStatusReq[i]["user"]){
+                    if (user1.users[index] == userStatusReq[i]["user"]){
                         var j;
-                        for (j in users) {
-                            if (users[j] == userStatusReq[i]["requester"]) {
-                                clients[j].send(JSON.stringify({type: "userStatus",online:0}));
+                        for (j in user1.users) {
+                            if (user1.users[j] == userStatusReq[i]["requester"]) {
+                                user1.clients[j].send(JSON.stringify({type: "userStatus",online:0}));
                             }
                         }
                     }
                 }
 
                 userStatusReq = userStatusReq.filter(function (req) {
-                    // return req["requester"] != users[index];
-                    if (req["user"] == users[index] && req["typing"]) {
+                    // return req["requester"] != user1.users[index];
+                    if (req["user"] == user1.users[index] && req["typing"]) {
                         return true;
                     } else {
-                        return req["requester"] != users[index];
+                        return req["requester"] != user1.users[index];
                     }
                 });
-                clients.splice(index, 1);
-                users.splice(index, 1);
+                user1.clients.splice(index, 1);
+                user1.users.splice(index, 1);
 
-                // delete clients[index];
-                // delete users[index];
+                // delete user1.clients[index];
+                // delete user1.users[index];
             });
 
         });

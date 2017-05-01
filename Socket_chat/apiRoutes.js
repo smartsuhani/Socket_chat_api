@@ -7,8 +7,20 @@ var twilioClient = require('twilio')(
     '686f4ccbd6561d7ff7df6153434bd493'
 );
 var sql = require('./sql');
+var user1 = require('./usersGlobal');
+var thumb = require('node-thumbnail').thumb;
+
+var contact = [];
 
 var number_otp = {};
+
+// function imageMagick(picture.path)
+// .resize('250', '180', '^')
+//     .gravity('center')
+//     .extent(250, 180)
+//     .write(picture.thumb_path, function (error) {
+//         if(error) console.log(error);
+//     });
 
 var storage = multer.diskStorage({
     destination: function (req, file, callback) {
@@ -17,18 +29,28 @@ var storage = multer.diskStorage({
             console.log("dir not exist");
             try {
                 fs.mkdirSync('./uploads/user'+parseInt(req.body.senderId));
+                if (!fs.existsSync('./uploads/user'+parseInt(req.body.senderId)+'/thumbnail')) {
+                    try {
+                        fs.mkdirSync('./uploads/user'+parseInt(req.body.senderId)+'/thumbnail');
+                    } catch (err) {
+                        console.log(err);
+                    }
+                }
             } catch (err) {
                 console.log(err);
             }
         }
-        req.body.path = "./uploads/user"+parseInt(req.body.senderId)+"/";
-        callback(null, './uploads/user'+parseInt(req.body.senderId)+"/");
+        req.body.path = "uploads/user"+parseInt(req.body.senderId)+"/";
+        req.body.thumbpath = "uploads/user"+parseInt(req.body.senderId)+"/thumbnail/";
+        callback(null, 'uploads/user'+parseInt(req.body.senderId)+"/");
     },
     filename: function (req, file, callback) {
         console.log(file);
 
         var file1 = file.originalname.split(".");
-        req.body.file = file1[0] + "_" + Date.now() + "." + file1[file1.length - 1];
+        var date = Date.now();
+        req.body.file = file1[0] + "_" + date + "." + file1[file1.length - 1];
+        req.body.thumbfile = file1[0] + "_" + date + "_thumb." + file1[file1.length - 1];
         callback(null, req.body.file);
     }
 });
@@ -43,7 +65,7 @@ module.exports = {
         });
 
         app.get('/download',function (req,res) {
-            res.sendFile(__dirname+"/"+req.query.file);
+            res.sendFile(__dirname+"/"+req.query.url);
         });
 
         app.post('/register', function (req, res) {
@@ -134,15 +156,54 @@ module.exports = {
             // });
         });
 
-        app.post('/uploads', function (req, res) {
-            upload(req, res, function (err) {
-                if (err) {
-                    console.log('Error Occured');
-                    return;
+        app.post('/uploads',upload.any(), function (req, res) {
+            thumb({
+                source: req.body.path+req.body.file, // could be a filename: dest/path/image.jpg
+                destination: req.body.path+"thumbnail",
+                concurrency: 4
+            }, function(err, stdout, stderr) {
+                if(err){
+
+                }else{
+                    for (var u in user1.users) {
+                        if (req.body.receiver_id == user1.users[u]) {
+                            user1.clients[u].send(JSON.stringify({
+                                senderId:req.body.senderId,
+                                imageUrl: "/download?url="+req.body.path+req.body.file,
+                                imageThumbnail: "/download?url="+req.body.path+req.body.thumbfile,
+                                time: (new Date()).getTime(),
+                                type: 'imageMessage'
+                        }));
+                        }
+                    }
+                    res.send({downloadUrl: "/download?url="+req.body.path+req.body.file});
                 }
-                console.log("hello  :" + req.body.file);
-                res.end('Your File Uploaded');
-                console.log('Photo Uploaded');
+            });
+
+        });
+        app.post('/contactCheck',function (req,res) {
+            var userNo = JSON.parse(req.body);
+            console.log(userNo);
+            var q = '';
+            userNo.forEach(function(number) {
+                q += "SELECT * FROM user WHERE user_id = "+parseInt(number) + "; ";
+            });
+            sql.executeSql(q,function (err,data) {
+                if (err) {
+
+                } else {
+                    data.forEach(function (num) {
+                        if (num.length > 0) {
+                            contact.push({
+                                number: num[0].user_id,
+                                profilepic: num[0].profileimage,
+                                check: true
+                            });
+                        } else {
+                        }
+                    });
+                    res.send(contact);
+                }
             });
         });
     }
