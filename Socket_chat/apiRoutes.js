@@ -10,17 +10,9 @@ var sql = require('./sql');
 var user1 = require('./usersGlobal');
 var thumb = require('node-thumbnail').thumb;
 
-var contact = [];
+var contact = new Array();
 
 var number_otp = {};
-
-// function imageMagick(picture.path)
-// .resize('250', '180', '^')
-//     .gravity('center')
-//     .extent(250, 180)
-//     .write(picture.thumb_path, function (error) {
-//         if(error) console.log(error);
-//     });
 
 var storage = multer.diskStorage({
     destination: function (req, file, callback) {
@@ -60,8 +52,11 @@ var upload = multer({storage:storage});
 module.exports = {
     configure: function (app) {
         app.get('/', function (req, res) {
-            // res.sendFile(__dirname+"/form.html");
             res.send("hello");
+        });
+
+        app.get('/file',function (req,res) {
+            res.sendFile(__dirname+"/form.html");
         });
 
         app.get('/download',function (req,res) {
@@ -129,42 +124,55 @@ module.exports = {
             //         res.send({resp: "failed"});
             //     } else {
             //         console.log(req);
-            var ip = req.headers["x-real-ip"];
-            var country;
-            var timezone;
-            satelize.satelize({ip: ip}, function (err, payload) {
-                if (err) {
+            thumb({
+                source: req.body.path+req.body.file, // could be a filename: dest/path/image.jpg
+                destination: req.body.path+"thumbnail",
+                concurrency: 4
+            },function (err,stdout,stderr) {
+               if (err) {
 
-                } else {
-                    country = payload.country.en;
-                    timezone = payload.timezone;
+               } else {
+                   var ip = req.headers["x-real-ip"];
+                   var country;
+                   var timezone;
+                   satelize.satelize({ip: ip}, function (err, payload) {
+                       if (err) {
 
-                    var lastseen = (new Date()).getTime();
-                    var updateuser = "UPDATE user set nick_name = '" + req.body.username + "' ,profileimage = '" + req.body.path + req.body.file + "' ,lastseen = " + lastseen + " ,country = '" + country + "' ,time_zone = '" + timezone + "' WHERE user_id = " + parseInt(req.body.senderId);
-                    sql.executeSql(updateuser, function (err, data) {
-                        if (err) {
-                            console.log("user " + req.body.senderId + " " + req.body.username + " updation failed");
-                            res.send({resp: "failed"});
-                        } else {
-                            console.log("user " + req.body.senderId + " updated successfully");
-                            res.send({resp: "success"});
-                        }
-                    });
-                }
+                       } else {
+                           country = payload.country.en;
+                           timezone = payload.timezone;
+
+                           var lastseen = (new Date()).getTime();
+                           var updateuser = "UPDATE user set nick_name = '" + req.body.username + "' ,profileimage = '" + req.body.path + req.body.file + "' ,lastseen = " + lastseen + " ,country = '" + country + "' ,time_zone = '" + timezone + "' WHERE user_id = " + parseInt(req.body.senderId);
+                           sql.executeSql(updateuser, function (err, data) {
+                               if (err) {
+                                   console.log("user " + req.body.senderId + " " + req.body.username + " updation failed");
+                                   res.send({resp: "failed"});
+                               } else {
+                                   console.log("user " + req.body.senderId + " updated successfully");
+                                   res.send({resp: "success"});
+                               }
+                           });
+                       }
+                   });
+               }
             });
             //     }
             // });
         });
 
         app.post('/uploads',upload.any(), function (req, res) {
+
+            console.log(req.body);
             thumb({
                 source: req.body.path+req.body.file, // could be a filename: dest/path/image.jpg
                 destination: req.body.path+"thumbnail",
                 concurrency: 4
             }, function(err, stdout, stderr) {
                 if(err){
-
+                    console.log(err);
                 }else{
+                    console.log("success");
                     for (var u in user1.users) {
                         if (req.body.receiver_id == user1.users[u]) {
                             user1.clients[u].send(JSON.stringify({
@@ -173,7 +181,7 @@ module.exports = {
                                 imageThumbnail: "/download?url="+req.body.path+req.body.thumbfile,
                                 time: (new Date()).getTime(),
                                 type: 'imageMessage'
-                        }));
+                            }));
                         }
                     }
                     res.send({downloadUrl: "/download?url="+req.body.path+req.body.file});
@@ -182,13 +190,12 @@ module.exports = {
 
         });
         app.post('/contactCheck',function (req,res) {
-            var userNo = JSON.parse(req.body);
-            console.log(userNo);
-            var q = '';
+            var userNo = req.body.users;
+            var userCheckQuery = '';
             userNo.forEach(function(number) {
-                q += "SELECT * FROM user WHERE user_id = "+parseInt(number) + "; ";
+                userCheckQuery += "SELECT * FROM user WHERE user_id = "+parseInt(number) + "; ";
             });
-            sql.executeSql(q,function (err,data) {
+            sql.executeSql(userCheckQuery,function (err,data) {
                 if (err) {
 
                 } else {
@@ -196,13 +203,23 @@ module.exports = {
                         if (num.length > 0) {
                             contact.push({
                                 number: num[0].user_id,
-                                profilepic: num[0].profileimage,
-                                check: true
+                                profile_pic: "/download?url="+(num[0].profileimage).toString(),
+                                nick_name: num[0].nick_name,
+                                status_user: num[0].status_user,
+                                lastseen: num[0].lastseen,
+                                country: num[0].country,
+                                time_zone: num[0].time_zone,
+                                profile_thumb: "/download?url="+(num[0].profile_thumb).toString()
                             });
                         } else {
                         }
                     });
-                    res.send(contact);
+                    if (contact.length > 0) {
+                        res.send(contact);
+                    } else {
+                        res.send({resp: "success with no contact"});
+                    }
+                    contact.splice(0, contact.length);
                 }
             });
         });

@@ -2,6 +2,7 @@
 var sql = require('./sql');
 var user1 = require('./usersGlobal');
 var userStatusReq = new Array();
+var msgType = require('./MessageType').MessageType;
 
 module.exports = {
     configure:function (wsServer) {
@@ -26,7 +27,7 @@ module.exports = {
                 var packet = JSON.parse(a.toString('utf8'));
                 console.log(packet);
 
-                if (packet.type == "initConnection") {
+                if (packet.type == msgType.initConnType) {
                     var userq = "SELECT * FROM user WHERE user_id = " + packet.senderId;
                     sql.executeSql(userq, function (err, data) {
                         if (err) {
@@ -122,7 +123,7 @@ module.exports = {
                     });
                 }
 
-                if (packet.type == "readMsgAck") {
+                if (packet.type == msgType.readAckType) {
                     var query = "UPDATE chat set status = 3 WHERE receiver_id = " + user1.users[index] + " AND sender_id = "+packet.senderId;
                     sql.executeSql(query, function (err, data) {
                         if (err) {
@@ -160,7 +161,7 @@ module.exports = {
                     // connection.send(JSON.stringify({type: "msgAck", msgAck: 5}));
                 }
 
-                if (packet.type == "createGroup") {
+                if (packet.type == msgType.groupCreation) {
 
                     var createdBy = packet.senderId;
                     sql.executeSql("INSERT INTO usergroups(group_name,created_by) VALUES(' '," + createdBy + ")", function (err, data) {
@@ -192,7 +193,7 @@ module.exports = {
                     });
                 }
 
-                if (packet.type == "updateGroup") {
+                if (packet.type == msgType.groupModify) {
                     var group_id = hold_group_id;
                     var complete = false;
                     sql.executeSql("UPDATE usergroups SET group_name = '" + packet.groupName + "' WHERE group_id = " + group_id, function (err, data) {
@@ -230,7 +231,7 @@ module.exports = {
                     });
                 }
 
-                if (packet.type == "groupmessage") {
+                if (packet.type == msgType.groupMessage) {
                     var obj = {
                         data: [{
                             time: Date(),
@@ -283,7 +284,7 @@ module.exports = {
                     });
                 }
 
-                if (packet.type == "message") {
+                if (packet.type == msgType.messageType) {
 
                     var obj = {
                         data: [{
@@ -330,7 +331,7 @@ module.exports = {
                     }
                 }
 
-                if (packet.type == "userstatus") {
+                if (packet.type == msgType.userstatus) {
                     var rec;
                     userStatusReq.push({requester:user1.users[index],user:packet.userId,typing: false});
                     var status = 0;
@@ -343,7 +344,7 @@ module.exports = {
                     connection.send(JSON.stringify({type:"userStatus",online: status}));
                 }
 
-                if (packet.type == "typing") {
+                if (packet.type == msgType.userTyping) {
                     var user;
                     if (packet.typing == true) {
                         userStatusReq.push({requester:packet.userId,user:user1.users[index],typing: true});
@@ -363,6 +364,20 @@ module.exports = {
                         }
                     }
                 }
+
+                if (packet.type == msgType.imageMessage) {}
+
+                if (packet.type == msgType.videoMessage) {}
+
+                if (packet.type == msgType.audioMessage) {}
+
+                if (packet.type == msgType.groupAudioMessage) {}
+
+                if (packet.type == msgType.groupImageMessage) {}
+
+                if (packet.type == msgType.groupVideoMessage) {}
+
+                if (packet.type == msgType.locationMessage) {}
             });
 
             // user disconnected

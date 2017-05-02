@@ -25,14 +25,14 @@ app.use(bodyParser.json());
 
 
 
-var webserver = app.listen(webport, function () {
+var webserver = app.listen(webport,'192.168.200.15',function () {
     console.log("https://" + webserver.address().address + ":" + webserver.address().port);
 });
 
 var server = http.createServer(function (request, response) {
     // Not important for us. We're writing WebSocket server, not HTTP server
 });
-server.listen(webSocketsServerPort, function () {
+server.listen(webSocketsServerPort,'192.168.200.15', function () {
     console.log((new Date()) + " Server is listening on port " + webSocketsServerPort);
 });
 

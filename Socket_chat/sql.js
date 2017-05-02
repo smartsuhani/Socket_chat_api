@@ -2,8 +2,9 @@ var mysql = require('mysql');
 var dbconfig = {
     host     : 'localhost',
     user     : 'root',
-    password : 'root',
+    password : '',
     database : 'Socket_chat',
+    port     : 3333,
     multipleStatements: true
 };
 

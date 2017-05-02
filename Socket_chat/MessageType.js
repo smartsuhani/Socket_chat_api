@@ -1,0 +1,19 @@
+module.exports.MessageType  = {
+    initConnType        : "initConnection",
+    messageType         : "message",
+    readAckType         : "readAckMsg",
+    userstatus          : "userstatus",
+    userTyping          : "typing",
+    imageMessage        : "imageMsg",
+    audioMessage        : "audioMsg",
+    videoMessage        : "videoMsg",
+    locationMessage     : "locationMsg",
+    videoCall           : "videoCall",
+    audioCall           : "audioCall",
+    groupMessage        : "groupMsg",
+    groupCreation       : "createGroup",
+    groupAudioMessage   : "groupAudioMsg",
+    groupVideoMessage   : "groupVideoMsg",
+    groupImageMessage   : "groupImageMsg",
+    groupModify         : "updateGroup"
+}
