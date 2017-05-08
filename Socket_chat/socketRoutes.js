@@ -3,6 +3,7 @@ var sql = require('./sql');
 var user1 = require('./usersGlobal');
 var userStatusReq = new Array();
 var msgType = require('./MessageType').MessageType;
+// var fs = require('filesystem')
 
 module.exports = {
     configure:function (wsServer) {
@@ -23,9 +24,10 @@ module.exports = {
 
             // user sent some message
             connection.on('message', function (message) {
+                // console.log("message is"+message);
                 var a = Buffer(message.binaryData);
                 var packet = JSON.parse(a.toString('utf8'));
-                console.log(packet);
+                // console.log(packet);
 
                 if (packet.type == msgType.initConnType) {
                     var userq = "SELECT * FROM user WHERE user_id = " + packet.senderId;
@@ -111,6 +113,7 @@ module.exports = {
                                             sql.executeSql("UPDATE chat SET status = IF(status = 1,2,IF(status = 3,4,status)) WHERE sender_id = "+user1.users[index],function (err,data) {
                                                 if (err) {
 
+
                                                 } else {
 
                                                 }
@@ -136,7 +139,7 @@ module.exports = {
                         type: 'msgAck',
                         msgAck: 3
                     };
-                    // history.push(obj);
+                    //history.push(obj);
 
                     var sent = false;
                     // send message to receiver
@@ -158,7 +161,7 @@ module.exports = {
                             }
                         });
                     }
-                    // connection.send(JSON.stringify({type: "msgAck", msgAck: 5}));
+                    //connection.send(JSON.stringify({type: "msgAck", msgAck: 5}));
                 }
 
                 if (packet.type == msgType.groupCreation) {
@@ -182,7 +185,7 @@ module.exports = {
 
                 }
 
-                if (packet.type == "groupcreationcancel") {
+                if (packet.type == msgType.groupcreationcancel) {
                     sql.executeSql("DELETE FROM usergroups WHERE group_id = " + hold_group_id, function (err, data) {
                         if (err) {
 
@@ -365,7 +368,53 @@ module.exports = {
                     }
                 }
 
-                if (packet.type == msgType.imageMessage) {}
+                if (packet.type == msgType.imageMessage) {
+                    var obj = {
+                        data: [{
+                            time: Date(),
+                            url: packet.url,
+                            sender_id: packet.senderId,
+                            receiver_id: packet.recieverId
+                        }],
+                        type: 'image'
+                    };
+                    // history.push(obj);
+
+                    var sent = false;
+                    // send message to receiver
+                    var json = JSON.stringify(obj);
+                    var rec;
+                    console.log(json)
+                    console.log("users: "+user1.users.length+"\nconnections: "+user1.clients.length);
+                    for (rec in user1.users) {
+                        if (user1.users[rec] == packet.recieverId) {
+                            console.log("inner " + rec);
+                            user1.clients[rec].send(json);
+                            sent = true;
+                        }
+                    }
+
+                    if (sent === true) {
+                        var query = "INSERT INTO chat (sender_id,receiver_id,message,status,time) VALUES(" + packet.senderId + "," + packet.recieverId + ",'" + packet.message + "'," + 2 + ",'" + Date() + "')";
+                        sql.executeSql(query, function (err, data) {
+                            if (err) {
+                                console.log("Error storing message to database");
+                            } else {
+                                connection.send(JSON.stringify({type: "msgAck", msgAck: 1, senderId:packet.recieverId}));
+                            }
+                        });
+                    } else {
+                        var query = "INSERT INTO chat (sender_id,receiver_id,message,status,time) VALUES(" + packet.senderId + "," + packet.recieverId + ",'" + packet.message + "'," + 0 + ",'" + Date() + "')";
+                        sql.executeSql(query, function (err, data) {
+                            if (err) {
+                                console.log("Error storing message to database");
+                            }else {
+                                connection.send(JSON.stringify({type: "msgAck", msgAck: 0, senderId:packet.recieverId}));
+                            }
+                        });
+                    }
+
+                }
 
                 if (packet.type == msgType.videoMessage) {}
 
@@ -377,7 +426,54 @@ module.exports = {
 
                 if (packet.type == msgType.groupVideoMessage) {}
 
-                if (packet.type == msgType.locationMessage) {}
+                if (packet.type == msgType.locationMessage) {
+                    var obj = {
+                        data: [{
+                            time: Date(),
+                            locationUrl: packet.locatioUrl,
+                            coordinate: packet.coordinate,
+                            sender_id: packet.senderId,
+                            receiver_id: packet.recieverId
+                        }],
+                        type: 'location'
+                    };
+                    // history.push(obj);
+
+                    var sent = false;
+                    // send message to receiver
+                    var json = JSON.stringify(obj);
+                    var rec;
+                    console.log(json)
+                    console.log("users: "+user1.users.length+"\nconnections: "+user1.clients.length);
+                    for (rec in user1.users) {
+                        if (user1.users[rec] == packet.recieverId) {
+                            console.log("inner " + rec);
+                            user1.clients[rec].send(json);
+                            sent = true;
+                        }
+                    }
+
+                    if (sent === true) {
+                        var query = "INSERT INTO chat (sender_id,receiver_id,message,status,time) VALUES(" + packet.senderId + "," + packet.recieverId + ",'" + packet.message + "'," + 2 + ",'" + Date() + "')";
+                        sql.executeSql(query, function (err, data) {
+                            if (err) {
+                                console.log("Error storing message to database");
+                            } else {
+                                connection.send(JSON.stringify({type: "msgAck", msgAck: 1, senderId:packet.recieverId}));
+                            }
+                        });
+                    } else {
+                        var query = "INSERT INTO chat (sender_id,receiver_id,message,status,time) VALUES(" + packet.senderId + "," + packet.recieverId + ",'" + packet.message + "'," + 0 + ",'" + Date() + "')";
+                        sql.executeSql(query, function (err, data) {
+                            if (err) {
+                                console.log("Error storing message to database");
+                            }else {
+                                connection.send(JSON.stringify({type: "msgAck", msgAck: 0, senderId:packet.recieverId}));
+                            }
+                        });
+                    }
+
+                }
             });
 
             // user disconnected

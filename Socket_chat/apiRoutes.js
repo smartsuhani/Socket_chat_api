@@ -189,6 +189,7 @@ module.exports = {
             });
 
         });
+
         app.post('/contactCheck',function (req,res) {
             var userNo = req.body.users;
             var userCheckQuery = '';
