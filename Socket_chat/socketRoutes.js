@@ -64,8 +64,23 @@ module.exports = {
                                     } else {
                                         var status = false;
                                         if (data.length > 0) {
-                                            connection.send(JSON.stringify({type: 'message', data: data}));
-                                            status = true
+                                            for (i in data) {
+                                                if (data[i]["message"] == "") {
+                                                    if (data[i]["location"] == "") {
+                                                        console.log(data[i]);
+                                                        connection.send(JSON.stringify({type: 'image', data: [data[i]]}));
+
+                                                    } else {
+                                                        console.log(data[i]);
+                                                        connection.send(JSON.stringify({type: 'location', data: [data[i]]}));
+                                                    }
+                                                } else {
+                                                    console.log(data[i]);
+                                                    connection.send(JSON.stringify({type: 'message', data: [data[i]]}));
+                                                }
+                                                status = true
+                                            }
+
                                         }
                                         if (status) {
                                             var q = "UPDATE chat set status = 1 WHERE receiver_id = " + packet.senderId;
@@ -300,6 +315,7 @@ module.exports = {
                         }],
                         type: 'message'
                     };
+                    console.log(obj);
                     // history.push(obj);
 
                     var sent = false;
@@ -374,7 +390,7 @@ module.exports = {
                     var obj = {
                         data: [{
                             time: Date(),
-                            url: packet.url,
+                            image: packet.image,
                             sender_id: packet.senderId,
                             receiver_id: packet.recieverId
                         }],
@@ -397,7 +413,7 @@ module.exports = {
                     }
 
                     if (sent === true) {
-                        var query = "INSERT INTO chat (sender_id,receiver_id,message,status,time) VALUES(" + packet.senderId + "," + packet.recieverId + ",'" + packet.message + "'," + 2 + ",'" + Date() + "')";
+                        var query = "INSERT INTO chat (sender_id,receiver_id,image,status,time) VALUES(" + packet.senderId + "," + packet.recieverId + ",'" + packet.image + "'," + 2 + ",'" + Date() + "')";
                         sql.executeSql(query, function (err, data) {
                             if (err) {
                                 console.log("Error storing message to database");
@@ -406,7 +422,7 @@ module.exports = {
                             }
                         });
                     } else {
-                        var query = "INSERT INTO chat (sender_id,receiver_id,message,status,time) VALUES(" + packet.senderId + "," + packet.recieverId + ",'" + packet.message + "'," + 0 + ",'" + Date() + "')";
+                        var query = "INSERT INTO chat (sender_id,receiver_id,image,status,time) VALUES(" + packet.senderId + "," + packet.recieverId + ",'" + packet.image + "'," + 0 + ",'" + Date() + "')";
                         sql.executeSql(query, function (err, data) {
                             if (err) {
                                 console.log("Error storing message to database");
@@ -432,10 +448,10 @@ module.exports = {
                     var obj = {
                         data: [{
                             time: Date(),
-                            locationUrl: packet.locationUrl,
-                            coordinate: packet.coordinate,
+                            image: packet.image,
+                            location: packet.location,
                             sender_id: packet.senderId,
-                            receiver_id: packet.receiverId
+                            receiver_id: packet.receiverId,
                         }],
                         type: 'location'
                     };
@@ -456,7 +472,7 @@ module.exports = {
                     }
 
                     if (sent === true) {
-                        var query = "INSERT INTO chat (sender_id,receiver_id,message,status,time) VALUES(" + packet.senderId + "," + packet.recieverId + ",'" + packet.message + "'," + 2 + ",'" + Date() + "')";
+                        var query = "INSERT INTO chat (sender_id,receiver_id,location,image,status,time) VALUES(" + packet.senderId + "," + packet.recieverId + ",'" + packet.location + "'," + "'"  + packet.image + "'," + 2 + ",'" + Date() + "')";
                         sql.executeSql(query, function (err, data) {
                             if (err) {
                                 console.log("Error storing message to database");
@@ -465,7 +481,7 @@ module.exports = {
                             }
                         });
                     } else {
-                        var query = "INSERT INTO chat (sender_id,receiver_id,message,status,time) VALUES(" + packet.senderId + "," + packet.recieverId + ",'" + packet.message + "'," + 0 + ",'" + Date() + "')";
+                        var query = "INSERT INTO chat (sender_id,receiver_id,location,image,status,time) VALUES(" + packet.senderId + "," + packet.recieverId + ",'" + packet.location + "'," + "'"  + packet.image + "'," + 0 + ",'" + Date() + "')";
                         sql.executeSql(query, function (err, data) {
                             if (err) {
                                 console.log("Error storing message to database");
