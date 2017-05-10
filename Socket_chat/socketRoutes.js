@@ -3,6 +3,7 @@ var sql = require('./sql');
 var user1 = require('./usersGlobal');
 var userStatusReq = new Array();
 var msgType = require('./MessageType').MessageType;
+var id
 // var fs = require('filesystem')
 
 module.exports = {
@@ -27,6 +28,7 @@ module.exports = {
                 // console.log("message is"+message);
                 var a = Buffer(message.binaryData);
                 var packet = JSON.parse(a.toString('utf8'));
+                id = packet
                 // console.log(packet);
 
                 if (packet.type == msgType.initConnType) {
@@ -48,11 +50,11 @@ module.exports = {
                                         var j;
                                         for (j in user1.users) {
                                             if (user1.users[j] == userStatusReq[i]["requester"]) {
-                                                user1.clients[j].send(JSON.stringify({type: "userStatus",online:1}));
+                                               // user1.clients[j].send(JSON.stringify({type: "userStatus",online:1,Id:packet.userId}));
                                             }
                                         }
                                     } else if (user1.users[index] == userStatusReq[i]["requester"] && userStatusReq[i]["typing"]) {
-                                        connection.send(JSON.stringify({type: "userStatus",online:2}));
+                                        // connection.send(JSON.stringify({type: "userStatus",online:2,Id:"2"}));
                                     }
                                 }
                                 var msgquery = "SELECT * FROM chat WHERE receiver_id = " + packet.senderId + " AND status = 0";
@@ -344,7 +346,7 @@ module.exports = {
                         }
                     }
 
-                    connection.send(JSON.stringify({type:"userStatus",online: status}));
+                   connection.send(JSON.stringify({type:"userStatus",online: status,Id:packet.userId}));
                 }
 
                 if (packet.type == msgType.userTyping) {
@@ -353,7 +355,7 @@ module.exports = {
                         userStatusReq.push({requester:packet.userId,user:user1.users[index],typing: true});
                         for (user in user1.users) {
                             if (user1.users[user] == packet.userId) {
-                                user1.clients[user].send(JSON.stringify({type:"userStatus",senderId:user1.users[index],online: 2}));
+                               user1.clients[user].send(JSON.stringify({type:"userStatus",Id:user1.users[index],online: 2}));
                             }
                         }
                     } else {
@@ -362,7 +364,7 @@ module.exports = {
                         });
                         for (user in user1.users) {
                             if (user1.users[user] == packet.userId) {
-                                user1.clients[user].send(JSON.stringify({type:"userStatus",senderId:user1.users[index],online: 3}));
+                                user1.clients[user].send(JSON.stringify({type:"userStatus",Id:user1.users[index],online: 3}));
                             }
                         }
                     }
@@ -430,10 +432,10 @@ module.exports = {
                     var obj = {
                         data: [{
                             time: Date(),
-                            locationUrl: packet.locatioUrl,
+                            locationUrl: packet.locationUrl,
                             coordinate: packet.coordinate,
                             sender_id: packet.senderId,
-                            receiver_id: packet.recieverId
+                            receiver_id: packet.receiverId
                         }],
                         type: 'location'
                     };
@@ -497,7 +499,7 @@ module.exports = {
                         var j;
                         for (j in user1.users) {
                             if (user1.users[j] == userStatusReq[i]["requester"]) {
-                                user1.clients[j].send(JSON.stringify({type: "userStatus",online:0}));
+                                user1.clients[j].send(JSON.stringify({type: "userStatus",online:0,Id:user1.users[index]}))
                             }
                         }
                     }
