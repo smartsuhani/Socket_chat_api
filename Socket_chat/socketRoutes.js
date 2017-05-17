@@ -434,7 +434,53 @@ module.exports = {
 
                 }
 
-                if (packet.type == msgType.videoMessage) {}
+                if (packet.type == msgType.videoMessage) {
+                    var obj = {
+                    data: [{
+                        time: Date(),
+                        video: packet.video,
+                        sender_id: packet.senderId,
+                        receiver_id: packet.recieverId
+                    }],
+                    type: 'video'
+                };
+                    // history.push(obj);
+
+                    var sent = false;
+                    // send message to receiver
+                    var json = JSON.stringify(obj);
+                    var rec;
+                    console.log(json)
+                    console.log("users: "+user1.users.length+"\nconnections: "+user1.clients.length);
+                    for (rec in user1.users) {
+                        if (user1.users[rec] == packet.recieverId) {
+                            console.log("inner " + rec);
+                            user1.clients[rec].send(json);
+                            sent = true;
+                        }
+                    }
+
+                    if (sent === true) {
+                        var query = "INSERT INTO chat (sender_id,receiver_id,video,status,time) VALUES(" + packet.senderId + "," + packet.recieverId + ",'" + packet.video + "'," + 2 + ",'" + Date() + "')";
+                        sql.executeSql(query, function (err, data) {
+                            if (err) {
+                                console.log("Error storing message to database");
+                            } else {
+                                connection.send(JSON.stringify({type: "msgAck", msgAck: 1, senderId:packet.recieverId}));
+                            }
+                        });
+                    } else {
+                        var query = "INSERT INTO chat (sender_id,receiver_id,video,status,time) VALUES(" + packet.senderId + "," + packet.recieverId + ",'" + packet.video + "'," + 0 + ",'" + Date() + "')";
+                        sql.executeSql(query, function (err, data) {
+                            if (err) {
+                                console.log("Error storing message to database");
+                            }else {
+                                connection.send(JSON.stringify({type: "msgAck", msgAck: 0, senderId:packet.recieverId}));
+                            }
+                        });
+                    }
+
+                }
 
                 if (packet.type == msgType.audioMessage) {}
 
@@ -492,7 +538,72 @@ module.exports = {
                     }
 
                 }
+
+                if (packet.type == msgType.videoCall) {
+                    var roomNumber = parseInt(Math.random() * (99999999 - 10000000) + 10000000);
+                    var obj = {
+                        data: [{
+                            sender_id: packet.sender_id,
+                            receiver_id: parseInt(packet.receiver_id),
+                            roomNumber: roomNumber,
+
+                        }],
+                        type: 'VCall'
+                    };
+
+                    connection.send(JSON.stringify({type:"VideoCallRoom",roomNumber:roomNumber}));
+
+                    var sent = false;
+                    // send message to receiver
+                    var json = JSON.stringify(obj);
+                    var rec;
+                    for (rec in user1.users) {
+                        console.log("outer " + rec);
+                        if (user1.users[rec] == packet.receiver_id) {
+                            console.log("inner " + rec);
+                            user1.clients[rec].send(json);
+                        }
+                    }
+                    if (sent) {
+                        var query = "UPDATE chat set status = 4 WHERE receiver_id = " + user1.users[index] + " AND sender_id = "+packet.senderId;
+                        sql.executeSql(query, function (err, data) {
+                            if (err) {
+                                console.log("Error storing message to database");
+                            }
+                        });
+                    }
+                }
+
+                if (packet.type == msgType.acceptVideoCall) {
+                    // send message to receiver
+                    var json = JSON.stringify({type: "acceptVCall"});
+                    var rec;
+                    for (rec in user1.users) {
+                        console.log("outer " + rec);
+                        if (user1.users[rec] == packet.receiver_id) {
+                            console.log("inner " + rec);
+                            user1.clients[rec].send(json);
+
+                        }
+                    }
+                }
+
+                if (packet.type == msgType.declineVideoCall) {
+                    // send message to receiver
+                    var json = JSON.stringify({type: "declineVCall"});
+                    var rec;
+                    for (rec in user1.users) {
+                        console.log("outer " + rec);
+                        if (user1.users[rec] == packet.receiver_id) {
+                            console.log("inner " + rec);
+                            user1.clients[rec].send(json);
+
+                        }
+                    }
+                }
             });
+
+
 
             // user disconnected
             connection.on('close', function (connection) {
@@ -533,7 +644,7 @@ module.exports = {
                 user1.users.splice(index, 1);
 
                 // delete user1.clients[index];
-                // delete user1.users[index];
+                //delete user1.users[index];
             });
 
         });

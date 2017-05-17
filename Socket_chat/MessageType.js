@@ -16,5 +16,7 @@ module.exports.MessageType  = {
     groupVideoMessage   : "groupVideoMsg",
     groupImageMessage   : "groupImageMsg",
     groupModify         : "updateGroup",
-    groupcreationcancel : "groupcreationcancel"
+    groupcreationcancel : "groupcreationcancel",
+    acceptVideoCall     : "acceptVideoCall",
+    declineVideoCall    : "declineVideoCall"
 }

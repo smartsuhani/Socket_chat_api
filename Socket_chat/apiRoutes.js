@@ -49,6 +49,8 @@ var storage = multer.diskStorage({
 
 var upload = multer({storage:storage});
 
+var video = multer({storage:storage});
+
 module.exports = {
     configure: function (app) {
         app.get('/', function (req, res) {
@@ -181,6 +183,35 @@ module.exports = {
                                 imageThumbnail: "/download?url="+req.body.path+req.body.thumbfile,
                                 time: (new Date()).getTime(),
                                 type: 'imageMessage'
+                            }));
+                        }
+                    }
+                    res.send({downloadUrl: "/download?url="+req.body.path+req.body.file});
+                }
+            });
+
+        });
+
+        app.post('/uploads/video',video.any(), function (req, res) {
+
+            console.log(req.body);
+            thumb({
+                source: req.body.path+req.body.file, // could be a filename: dest/path/image.jpg
+                destination: req.body.path+"thumbnail",
+                concurrency: 4
+            }, function(err, stdout, stderr) {
+                if(err){
+                    console.log(err);
+                }else{
+                    console.log("success");
+                    for (var u in user1.users) {
+                        if (req.body.receiver_id == user1.users[u]) {
+                            user1.clients[u].send(JSON.stringify({
+                                senderId:req.body.senderId,
+                                imageUrl: "/download?url="+req.body.path+req.body.file,
+                                imageThumbnail: "/download?url="+req.body.path+req.body.thumbfile,
+                                time: (new Date()).getTime(),
+                                type: 'videoMessage'
                             }));
                         }
                     }
