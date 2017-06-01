@@ -54,7 +54,7 @@ var video = multer({storage:storage});
 module.exports = {
     configure: function (app) {
         app.get('/', function (req, res) {
-            res.send("hello");
+            res.send({id: "1",name:"MIike"});
         });
 
         app.get('/file',function (req,res) {
@@ -73,7 +73,7 @@ module.exports = {
                     res.send({err: "something went wrong try again later!"});
                 } else {
                     if (data.length > 0) {
-                        res.send({msg: "number already registered"});
+                        res.send({resp: "number already registered"});
                     } else {
                         var otp = parseInt(Math.random() * (999999 - 100000) + 100000);
                         twilioClient.messages.create({
@@ -134,6 +134,7 @@ module.exports = {
                if (err) {
 
                } else {
+                   if(req.headers['x-real-ip']){
                    var ip = req.headers["x-real-ip"];
                    var country;
                    var timezone;
@@ -157,6 +158,19 @@ module.exports = {
                            });
                        }
                    });
+                    } else {
+                       var lastseen = (new Date()).getTime();
+                       var updateuser = "UPDATE user set nick_name = '" + req.body.username + "' ,profileimage = '" + req.body.path + req.body.file + "' ,lastseen = " + lastseen + " ,country = 'india' ,time_zone = 'ASIA/KOLKATA' WHERE user_id = " + parseInt(req.body.senderId);
+                       sql.executeSql(updateuser, function (err, data) {
+                           if (err) {
+                               console.log("user " + req.body.senderId + " " + req.body.username + " updation failed");
+                               res.send({resp: "failed"});
+                           } else {
+                               console.log("user " + req.body.senderId + " updated successfully");
+                               res.send({resp: "success"});
+                           }
+                       });
+                   }
                }
             });
             //     }

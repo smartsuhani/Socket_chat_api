@@ -311,7 +311,7 @@ module.exports = {
                             time: Date(),
                             message: packet.message,
                             sender_id: packet.senderId,
-                            receiver_id: packet.recieverId
+                            receiver_id: parseInt(packet.recieverId)
                         }],
                         type: 'message'
                     };
@@ -359,10 +359,12 @@ module.exports = {
                     for (rec in user1.users) {
                         if (user1.users[rec] == packet.userId) {
                             status = 1;
-                        }
-                    }
 
-                   connection.send(JSON.stringify({type:"userStatus",online: status,Id:packet.userId}));
+                        }
+
+                    }
+                    connection.send(JSON.stringify({type:"userStatus",online: status,Id:packet.userId}));
+
                 }
 
                 if (packet.type == msgType.userTyping) {
@@ -590,7 +592,7 @@ module.exports = {
 
                 if (packet.type == msgType.declineVideoCall) {
                     // send message to receiver
-                    var json = JSON.stringify({type: "declineVCall"});
+                    var json = JSON.stringify({type: "declineVCall",Id:packet.sender_id});
                     var rec;
                     for (rec in user1.users) {
                         console.log("outer " + rec);

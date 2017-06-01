@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/Socket_chat/apiRoutes.js" line="194" />
+    <bookmark url="file://$PROJECT_DIR$/Socket_chat/apiRoutes.js" line="208" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="71ba0caa-62e2-4fb6-bdc0-a3072a016fed" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Socket_chat/MessageType.js" afterPath="$PROJECT_DIR$/Socket_chat/MessageType.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Socket_chat/apiRoutes.js" afterPath="$PROJECT_DIR$/Socket_chat/apiRoutes.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Socket_chat/socketRoutes.js" afterPath="$PROJECT_DIR$/Socket_chat/socketRoutes.js" />
     </list>
@@ -32,32 +31,29 @@
       <file leaf-file-name="index.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Socket_chat/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="208">
-              <caret line="16" column="20" lean-forward="false" selection-start-line="16" selection-start-column="20" selection-end-line="16" selection-end-column="20" />
+            <state relative-caret-position="442">
+              <caret line="34" column="51" lean-forward="false" selection-start-line="34" selection-start-column="51" selection-end-line="34" selection-end-column="51" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="socketRoutes.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="socketRoutes.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Socket_chat/socketRoutes.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="40">
-              <caret line="592" column="70" lean-forward="true" selection-start-line="592" selection-start-column="70" selection-end-line="592" selection-end-column="70" />
+            <state relative-caret-position="3172">
+              <caret line="359" column="24" lean-forward="false" selection-start-line="359" selection-start-column="24" selection-end-line="359" selection-end-column="24" />
               <folding>
-                <element signature="e#8478#10217#0" expanded="false" />
                 <element signature="e#10277#11175#0" expanded="false" />
                 <element signature="e#11241#11673#0" expanded="false" />
                 <element signature="e#11731#13992#0" expanded="false" />
                 <element signature="e#14051#16923#0" expanded="false" />
-                <element signature="e#16981#19364#0" expanded="false" />
-                <element signature="e#19421#19916#0" expanded="false" />
-                <element signature="e#19973#21016#0" expanded="false" />
-                <element signature="e#20052#20487#0" expanded="false" />
-                <element signature="e#21075#23444#0" expanded="false" />
-                <element signature="e#26161#28671#0" expanded="false" />
-                <element signature="e#28727#30228#0" expanded="false" />
-                <element signature="e#30290#30791#0" expanded="false" />
+                <element signature="e#21088#23457#0" expanded="false" />
+                <element signature="e#23516#25853#0" expanded="false" />
+                <element signature="e#26174#28684#0" expanded="false" />
+                <element signature="e#28740#30241#0" expanded="false" />
+                <element signature="e#30303#30804#0" expanded="false" />
+                <element signature="e#30867#31389#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -73,14 +69,13 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="apiRoutes.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="apiRoutes.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Socket_chat/apiRoutes.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="403">
-              <caret line="31" column="33" lean-forward="false" selection-start-line="31" selection-start-column="33" selection-end-line="31" selection-end-column="33" />
+            <state relative-caret-position="-2050">
+              <caret line="56" column="43" lean-forward="false" selection-start-line="56" selection-start-column="43" selection-end-line="56" selection-end-column="43" />
               <folding>
-                <element signature="e#3733#4515#0" expanded="false" />
-                <element signature="e#4588#6620#0" expanded="false" />
+                <element signature="e#3749#4531#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -89,18 +84,8 @@
       <file leaf-file-name="MessageType.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Socket_chat/MessageType.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="104">
-              <caret line="8" column="35" lean-forward="false" selection-start-line="8" selection-start-column="27" selection-end-line="8" selection-end-column="35" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="sql.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Socket_chat/sql.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="247">
-              <caret line="19" column="22" lean-forward="false" selection-start-line="19" selection-start-column="22" selection-end-line="19" selection-end-column="22" />
+            <state relative-caret-position="260">
+              <caret line="20" column="43" lean-forward="false" selection-start-line="20" selection-start-column="27" selection-end-line="20" selection-end-column="43" />
               <folding />
             </state>
           </provider>
@@ -131,11 +116,13 @@
       <find>userStatus</find>
       <find>message</find>
       <find>type: 'message'</find>
-      <find>msg</find>
       <find>msgAck</find>
       <find>Math</find>
       <find>storage</find>
       <find>data</find>
+      <find>ip</find>
+      <find>msg</find>
+      <find>$PROJECT_DIR$/Socket_chat/default_pic/default-user.png</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -145,11 +132,12 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/Socket_chat/index.html" />
-        <option value="$PROJECT_DIR$/Socket_chat/index.js" />
         <option value="events.js" />
         <option value="$PROJECT_DIR$/Socket_chat/MessageType.js" />
-        <option value="$PROJECT_DIR$/Socket_chat/apiRoutes.js" />
+        <option value="$PROJECT_DIR$/Socket_chat/node_modules/maxmind-db-reader/lib/IPParser.js" />
+        <option value="$PROJECT_DIR$/Socket_chat/index.js" />
         <option value="$PROJECT_DIR$/Socket_chat/socketRoutes.js" />
+        <option value="$PROJECT_DIR$/Socket_chat/apiRoutes.js" />
       </list>
     </option>
   </component>
@@ -163,10 +151,10 @@
     <handled-path value="$PROJECT_DIR$/Socket_chat/node_modules" />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="64" />
-    <option name="y" value="-11" />
-    <option name="width" value="1303" />
-    <option name="height" value="780" />
+    <option name="x" value="65" />
+    <option name="y" value="-4" />
+    <option name="width" value="1301" />
+    <option name="height" value="772" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -183,7 +171,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
       <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
@@ -229,30 +216,9 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Socket_chat_api" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Socket_chat_api" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Socket_chat" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="uploads" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="user8454644" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -261,7 +227,7 @@
     <property name="javascript.nodejs.core.library.configured.version" value="4.5.0" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="HbShouldOpenHtmlAsHb" value="" />
-    <property name="last_opened_file_path" value="$USER_HOME$/Documents/projects/pennybox/pennybox-core-api" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="restartRequiresConfirmation" value="false" />
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
   </component>
@@ -395,7 +361,19 @@
       <workItem from="1494828930643" duration="6109000" />
       <workItem from="1494908628502" duration="3074000" />
       <workItem from="1494995310082" duration="2079000" />
-      <workItem from="1494999800088" duration="1486000" />
+      <workItem from="1494999800088" duration="4337000" />
+      <workItem from="1495083424183" duration="6612000" />
+      <workItem from="1495108928384" duration="1321000" />
+      <workItem from="1495167388687" duration="31000" />
+      <workItem from="1495168457120" duration="12216000" />
+      <workItem from="1495252534384" duration="1153000" />
+      <workItem from="1495257873127" duration="32000" />
+      <workItem from="1495259267586" duration="4288000" />
+      <workItem from="1495515409324" duration="4950000" />
+      <workItem from="1495540752943" duration="23000" />
+      <workItem from="1495857937883" duration="98000" />
+      <workItem from="1495858578272" duration="1670000" />
+      <workItem from="1496319760264" duration="15000" />
     </task>
     <task id="LOCAL-00001" summary="location and image send receive">
       <created>1494238241483</created>
@@ -418,11 +396,18 @@
       <option name="project" value="LOCAL" />
       <updated>1494420970105</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="location and image complete">
+      <created>1495014707934</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1495014707934</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="98140000" />
+    <option name="totallyTimeSpent" value="133400000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -434,18 +419,18 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="64" y="-11" width="1303" height="780" extended-state="6" />
+    <frame x="65" y="-4" width="1301" height="772" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24256651" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32972136" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24256651" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32847896" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32972136" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.46749225" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32847896" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.46594426" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32507738" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32198143" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31888545" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4789644" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32972136" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -456,27 +441,33 @@
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32972136" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32847896" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32972136" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32972136" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.46749225" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32507738" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21205008" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32847896" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.46594426" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32198143" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24256651" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32972136" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31888545" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4789644" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="processedProjectFiles" value="true" />
+    <option name="exactExcludedFiles">
+      <list>
+        <option value="$USER_HOME$/Documents/quickstart/src/app/in-memory-data.service.js.map" />
+        <option value="$USER_HOME$/Documents/quickstart/src/app/in-memory-data.service.js" />
+      </list>
+    </option>
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
@@ -491,7 +482,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/Socket_chat/socketRoutes.js</url>
-          <line>534</line>
+          <line>536</line>
           <option name="timeStamp" value="127" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
@@ -501,103 +492,30 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/Socket_chat/socketRoutes.js</url>
-          <line>597</line>
+          <line>599</line>
           <option name="timeStamp" value="138" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="141" />
+      <option name="time" value="148" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Socket_chat/apiRoutes.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="247">
-          <caret line="19" column="8" lean-forward="true" selection-start-line="19" selection-start-column="8" selection-end-line="19" selection-end-column="8" />
-          <folding>
-            <element signature="e#3733#4515#0" expanded="false" />
-            <element signature="e#4588#6620#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Socket_chat/MessageType.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="78">
-          <caret line="6" column="35" lean-forward="false" selection-start-line="6" selection-start-column="27" selection-end-line="6" selection-end-column="35" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Socket_chat/uploads/user1552150835/img1_1493886460188.jpg">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Socket_chat/uploads/user8454644/thumbnail/img1_1493450432015_1493721534286.jpg">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Socket_chat/socketRoutes.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4875">
-          <caret line="375" column="83" lean-forward="true" selection-start-line="375" selection-start-column="83" selection-end-line="375" selection-end-column="83" />
-          <folding>
-            <element signature="e#8478#10217#0" expanded="false" />
-            <element signature="e#10277#11175#0" expanded="false" />
-            <element signature="e#11241#11673#0" expanded="false" />
-            <element signature="e#11731#13992#0" expanded="false" />
-            <element signature="e#14051#16923#0" expanded="false" />
-            <element signature="e#16981#19364#0" expanded="false" />
-            <element signature="e#19421#19916#0" expanded="false" />
-            <element signature="e#19973#21016#0" expanded="false" />
-            <element signature="e#20052#20487#0" expanded="false" />
-            <element signature="e#21075#23444#0" expanded="false" />
-            <element signature="e#26161#28671#0" expanded="false" />
-            <element signature="e#28727#30228#0" expanded="false" />
-            <element signature="e#30290#30791#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Socket_chat/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="169">
-          <caret line="13" column="39" lean-forward="false" selection-start-line="13" selection-start-column="39" selection-end-line="13" selection-end-column="39" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Socket_chat/apiRoutes.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="325">
-          <caret line="25" column="29" lean-forward="false" selection-start-line="25" selection-start-column="29" selection-end-line="25" selection-end-column="29" />
-          <folding>
-            <element signature="e#3733#4515#0" expanded="false" />
-            <element signature="e#4588#6620#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Socket_chat/socketRoutes.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="52">
           <caret line="4" column="11" lean-forward="false" selection-start-line="4" selection-start-column="4" selection-end-line="4" selection-end-column="11" />
           <folding>
-            <element signature="e#8478#10217#0" expanded="false" />
             <element signature="e#10277#11175#0" expanded="false" />
             <element signature="e#11241#11673#0" expanded="false" />
             <element signature="e#11731#13992#0" expanded="false" />
             <element signature="e#14051#16923#0" expanded="false" />
-            <element signature="e#16981#19364#0" expanded="false" />
-            <element signature="e#19421#19916#0" expanded="false" />
-            <element signature="e#19973#21016#0" expanded="false" />
-            <element signature="e#20052#20487#0" expanded="false" />
-            <element signature="e#21075#23444#0" expanded="false" />
-            <element signature="e#26161#28671#0" expanded="false" />
-            <element signature="e#28727#30228#0" expanded="false" />
-            <element signature="e#30290#30791#0" expanded="false" />
+            <element signature="e#21088#23457#0" expanded="false" />
+            <element signature="e#23516#25853#0" expanded="false" />
+            <element signature="e#26174#28684#0" expanded="false" />
+            <element signature="e#28740#30241#0" expanded="false" />
+            <element signature="e#30303#30804#0" expanded="false" />
+            <element signature="e#30867#31389#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -633,8 +551,7 @@
         <state relative-caret-position="325">
           <caret line="25" column="29" lean-forward="false" selection-start-line="25" selection-start-column="29" selection-end-line="25" selection-end-column="29" />
           <folding>
-            <element signature="e#3733#4515#0" expanded="false" />
-            <element signature="e#4588#6620#0" expanded="false" />
+            <element signature="e#3749#4531#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -644,19 +561,16 @@
         <state relative-caret-position="52">
           <caret line="4" column="11" lean-forward="false" selection-start-line="4" selection-start-column="4" selection-end-line="4" selection-end-column="11" />
           <folding>
-            <element signature="e#8478#10217#0" expanded="false" />
             <element signature="e#10277#11175#0" expanded="false" />
             <element signature="e#11241#11673#0" expanded="false" />
             <element signature="e#11731#13992#0" expanded="false" />
             <element signature="e#14051#16923#0" expanded="false" />
-            <element signature="e#16981#19364#0" expanded="false" />
-            <element signature="e#19421#19916#0" expanded="false" />
-            <element signature="e#19973#21016#0" expanded="false" />
-            <element signature="e#20052#20487#0" expanded="false" />
-            <element signature="e#21075#23444#0" expanded="false" />
-            <element signature="e#26161#28671#0" expanded="false" />
-            <element signature="e#28727#30228#0" expanded="false" />
-            <element signature="e#30290#30791#0" expanded="false" />
+            <element signature="e#21088#23457#0" expanded="false" />
+            <element signature="e#23516#25853#0" expanded="false" />
+            <element signature="e#26174#28684#0" expanded="false" />
+            <element signature="e#28740#30241#0" expanded="false" />
+            <element signature="e#30303#30804#0" expanded="false" />
+            <element signature="e#30867#31389#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -692,8 +606,7 @@
         <state relative-caret-position="325">
           <caret line="25" column="29" lean-forward="false" selection-start-line="25" selection-start-column="29" selection-end-line="25" selection-end-column="29" />
           <folding>
-            <element signature="e#3733#4515#0" expanded="false" />
-            <element signature="e#4588#6620#0" expanded="false" />
+            <element signature="e#3749#4531#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -721,19 +634,16 @@
         <state relative-caret-position="390">
           <caret line="30" column="70" lean-forward="false" selection-start-line="30" selection-start-column="70" selection-end-line="30" selection-end-column="70" />
           <folding>
-            <element signature="e#8478#10217#0" expanded="false" />
             <element signature="e#10277#11175#0" expanded="false" />
             <element signature="e#11241#11673#0" expanded="false" />
             <element signature="e#11731#13992#0" expanded="false" />
             <element signature="e#14051#16923#0" expanded="false" />
-            <element signature="e#16981#19364#0" expanded="false" />
-            <element signature="e#19421#19916#0" expanded="false" />
-            <element signature="e#19973#21016#0" expanded="false" />
-            <element signature="e#20052#20487#0" expanded="false" />
-            <element signature="e#21075#23444#0" expanded="false" />
-            <element signature="e#26161#28671#0" expanded="false" />
-            <element signature="e#28727#30228#0" expanded="false" />
-            <element signature="e#30290#30791#0" expanded="false" />
+            <element signature="e#21088#23457#0" expanded="false" />
+            <element signature="e#23516#25853#0" expanded="false" />
+            <element signature="e#26174#28684#0" expanded="false" />
+            <element signature="e#28740#30241#0" expanded="false" />
+            <element signature="e#30303#30804#0" expanded="false" />
+            <element signature="e#30867#31389#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -751,8 +661,7 @@
         <state relative-caret-position="3438">
           <caret line="191" column="0" lean-forward="false" selection-start-line="191" selection-start-column="0" selection-end-line="191" selection-end-column="0" />
           <folding>
-            <element signature="e#3733#4515#0" expanded="false" />
-            <element signature="e#4588#6620#0" expanded="false" />
+            <element signature="e#3749#4531#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -780,19 +689,16 @@
         <state relative-caret-position="1890">
           <caret line="105" column="0" lean-forward="false" selection-start-line="105" selection-start-column="0" selection-end-line="105" selection-end-column="0" />
           <folding>
-            <element signature="e#8478#10217#0" expanded="false" />
             <element signature="e#10277#11175#0" expanded="false" />
             <element signature="e#11241#11673#0" expanded="false" />
             <element signature="e#11731#13992#0" expanded="false" />
             <element signature="e#14051#16923#0" expanded="false" />
-            <element signature="e#16981#19364#0" expanded="false" />
-            <element signature="e#19421#19916#0" expanded="false" />
-            <element signature="e#19973#21016#0" expanded="false" />
-            <element signature="e#20052#20487#0" expanded="false" />
-            <element signature="e#21075#23444#0" expanded="false" />
-            <element signature="e#26161#28671#0" expanded="false" />
-            <element signature="e#28727#30228#0" expanded="false" />
-            <element signature="e#30290#30791#0" expanded="false" />
+            <element signature="e#21088#23457#0" expanded="false" />
+            <element signature="e#23516#25853#0" expanded="false" />
+            <element signature="e#26174#28684#0" expanded="false" />
+            <element signature="e#28740#30241#0" expanded="false" />
+            <element signature="e#30303#30804#0" expanded="false" />
+            <element signature="e#30867#31389#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -875,6 +781,27 @@
         <state />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Socket_chat/sql.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="247">
+          <caret line="19" column="22" lean-forward="false" selection-start-line="19" selection-start-column="22" selection-end-line="19" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Socket_chat/node_modules/ip-address/lib/ipv6.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5330">
+          <caret line="410" column="0" lean-forward="false" selection-start-line="410" selection-start-column="0" selection-end-line="410" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Socket_chat/node_modules/maxmind-db-reader/lib/IPParser.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="156">
+          <caret line="12" column="1" lean-forward="false" selection-start-line="12" selection-start-column="1" selection-end-line="12" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Socket_chat/usersGlobal.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="65">
@@ -885,57 +812,70 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Socket_chat/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="208">
-          <caret line="16" column="20" lean-forward="false" selection-start-line="16" selection-start-column="20" selection-end-line="16" selection-end-column="20" />
+        <state relative-caret-position="442">
+          <caret line="34" column="51" lean-forward="false" selection-start-line="34" selection-start-column="51" selection-end-line="34" selection-end-column="51" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Socket_chat/apiRoutes.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="403">
-          <caret line="31" column="33" lean-forward="false" selection-start-line="31" selection-start-column="33" selection-end-line="31" selection-end-column="33" />
-          <folding>
-            <element signature="e#3733#4515#0" expanded="false" />
-            <element signature="e#4588#6620#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Socket_chat/MessageType.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="104">
-          <caret line="8" column="35" lean-forward="false" selection-start-line="8" selection-start-column="27" selection-end-line="8" selection-end-column="35" />
+        <state relative-caret-position="260">
+          <caret line="20" column="43" lean-forward="false" selection-start-line="20" selection-start-column="27" selection-end-line="20" selection-end-column="43" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Socket_chat/sql.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="247">
-          <caret line="19" column="22" lean-forward="false" selection-start-line="19" selection-start-column="22" selection-end-line="19" selection-end-column="22" />
-          <folding />
-        </state>
+    <entry file="file://$PROJECT_DIR$/Socket_chat/uploads/user917878499987/img1_1495169923065.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Socket_chat/uploads/user917878499987/img1_1495098735297.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Socket_chat/uploads/user917878499987/img1_1495104250401.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Socket_chat/uploads/user917878499987/img1_1495170192530.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Socket_chat/uploads/user917878499987/img1_1495171780404.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Socket_chat/socketRoutes.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="40">
-          <caret line="592" column="70" lean-forward="true" selection-start-line="592" selection-start-column="70" selection-end-line="592" selection-end-column="70" />
+        <state relative-caret-position="3172">
+          <caret line="359" column="24" lean-forward="false" selection-start-line="359" selection-start-column="24" selection-end-line="359" selection-end-column="24" />
           <folding>
-            <element signature="e#8478#10217#0" expanded="false" />
             <element signature="e#10277#11175#0" expanded="false" />
             <element signature="e#11241#11673#0" expanded="false" />
             <element signature="e#11731#13992#0" expanded="false" />
             <element signature="e#14051#16923#0" expanded="false" />
-            <element signature="e#16981#19364#0" expanded="false" />
-            <element signature="e#19421#19916#0" expanded="false" />
-            <element signature="e#19973#21016#0" expanded="false" />
-            <element signature="e#20052#20487#0" expanded="false" />
-            <element signature="e#21075#23444#0" expanded="false" />
-            <element signature="e#26161#28671#0" expanded="false" />
-            <element signature="e#28727#30228#0" expanded="false" />
-            <element signature="e#30290#30791#0" expanded="false" />
+            <element signature="e#21088#23457#0" expanded="false" />
+            <element signature="e#23516#25853#0" expanded="false" />
+            <element signature="e#26174#28684#0" expanded="false" />
+            <element signature="e#28740#30241#0" expanded="false" />
+            <element signature="e#30303#30804#0" expanded="false" />
+            <element signature="e#30867#31389#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Socket_chat/apiRoutes.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2050">
+          <caret line="56" column="43" lean-forward="false" selection-start-line="56" selection-start-column="43" selection-end-line="56" selection-end-column="43" />
+          <folding>
+            <element signature="e#3749#4531#0" expanded="false" />
           </folding>
         </state>
       </provider>
